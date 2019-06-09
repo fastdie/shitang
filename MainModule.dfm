@@ -24,4 +24,14 @@ object UniMainModule: TUniMainModule
     Left = 88
     Top = 200
   end
+  object dingcan_query: TUniQuery
+    Connection = UniConnection1
+    Left = 208
+    Top = 56
+  end
+  object tuican_query: TUniQuery
+    Connection = UniConnection1
+    Left = 208
+    Top = 120
+  end
 end

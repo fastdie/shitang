@@ -11,6 +11,8 @@ type
     UniConnection1: TUniConnection;
     MySQLUniProvider1: TMySQLUniProvider;
     exec_query: TUniQuery;
+    dingcan_query: TUniQuery;
+    tuican_query: TUniQuery;
   private
     { Private declarations }
   public

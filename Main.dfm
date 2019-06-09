@@ -16,7 +16,7 @@ object MainForm: TMainForm
     Width = 852
     Height = 411
     Hint = ''
-    ActivePage = UniTabSheet3
+    ActivePage = UniTabSheet1
     Align = alClient
     TabOrder = 0
     object UniTabSheet1: TUniTabSheet
@@ -29,7 +29,7 @@ object MainForm: TMainForm
         Width = 503
         Height = 359
         Hint = ''
-        Caption = #36873#25321#35746#39184#26085#26399#65292#23558#24038#20391#33756#21333#28155#21152#21040#21491#20391#65292#28857#20987#20445#23384#30830#35748
+        Caption = #23558#33756#21333#20449#24687#20174#24038#26639#31227#33267#21491#26639#65292#28857#20445#23384#21363#23436#25104#35746#39184#24037#20316
         TabOrder = 0
         object UniDateTimePicker1: TUniDateTimePicker
           Left = 10
@@ -49,8 +49,10 @@ object MainForm: TMainForm
           Height = 293
           Hint = ''
           Items.FontData = {0100000000}
+          AutoExpand = True
           TabOrder = 2
           Color = clWindow
+          OnChange = UniTreeView1Change
         end
         object UniTreeView2: TUniTreeView
           Left = 280
@@ -92,6 +94,16 @@ object MainForm: TMainForm
           TabOrder = 6
           OnClick = UniButton4Click
         end
+        object UniButton8: TUniButton
+          Left = 191
+          Top = 296
+          Width = 75
+          Height = 25
+          Hint = ''
+          Caption = 'display'
+          TabOrder = 7
+          OnClick = UniButton8Click
+        end
       end
     end
     object UniTabSheet2: TUniTabSheet
@@ -104,7 +116,7 @@ object MainForm: TMainForm
         Width = 503
         Height = 359
         Hint = ''
-        Caption = #36873#25321#36864#39184#26085#26399#65292#23558#24038#20391#35746#39184#20449#24687#31227#21160#21040#21491#20391#65292#28857#20987#21024#38500#30830#35748
+        Caption = #23558#33756#21333#20449#24687#20174#24038#26639#31227#33267#21491#26639#65292#28857#21024#38500#21363#23436#25104#36864#39184#24037#20316
         TabOrder = 0
         object UniDateTimePicker2: TUniDateTimePicker
           Left = 10
@@ -247,5 +259,15 @@ object MainForm: TMainForm
         end
       end
     end
+  end
+  object UniTimer1: TUniTimer
+    ClientEvent.Strings = (
+      'function(sender)'
+      '{'
+      ' '
+      '}')
+    OnTimer = UniTimer1Timer
+    Left = 232
+    Top = 64
   end
 end

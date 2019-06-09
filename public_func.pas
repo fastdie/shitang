@@ -37,6 +37,8 @@ end;}
 //
 // -------------------------------------------
 
+function my_leftcopy(s:string):string;
+
 implementation
 
 function encoding(s:string;key:string):string;
@@ -62,6 +64,18 @@ begin
   begin
     result:=result + char(strtoint('$'+copy(s,i*2-1,2)) xor byte(key[j]));
     j:=(j+1) mod 8;
+  end;
+end;
+
+function my_leftcopy(s:string):string;
+var
+  i:integer;
+begin
+  result:='';
+  while pos(':',s)>0 do
+  begin
+    i:=pos(':',s);
+    result:=copy(s,1,i-1);
   end;
 end;
 
