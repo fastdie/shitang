@@ -6,7 +6,8 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics,
   Controls, Forms, uniGUITypes, uniGUIAbstractClasses,
   uniGUIClasses, uniGUIRegClasses, uniGUIForm, uniPanel, uniPageControl,
-  uniGUIBaseClasses, uniButton, uniLabel, uniEdit, uniGroupBox, uniStatusBar;
+  uniGUIBaseClasses, uniButton, uniLabel, uniEdit, uniGroupBox, uniStatusBar,
+  uniTreeView, uniDateTimePicker;
 
 type
   TMainForm = class(TUniForm)
@@ -22,8 +23,36 @@ type
     UniEdit2: TUniEdit;
     UniEdit3: TUniEdit;
     UniButton1: TUniButton;
+    UniGroupBox2: TUniGroupBox;
+    UniDateTimePicker1: TUniDateTimePicker;
+    UniTreeView1: TUniTreeView;
+    UniTreeView2: TUniTreeView;
+    UniButton2: TUniButton;
+    UniButton3: TUniButton;
+    UniButton4: TUniButton;
+    UniGroupBox3: TUniGroupBox;
+    UniDateTimePicker2: TUniDateTimePicker;
+    UniTreeView3: TUniTreeView;
+    UniTreeView4: TUniTreeView;
+    UniButton5: TUniButton;
+    UniButton6: TUniButton;
+    UniButton7: TUniButton;
     procedure UniFormCreate(Sender: TObject);
     procedure UniButton1Click(Sender: TObject);
+    procedure UniTabSheet1BeforeActivate(Sender: TObject;
+      var AllowActivate: Boolean);
+    procedure UniTabSheet2BeforeActivate(Sender: TObject;
+      var AllowActivate: Boolean);
+    procedure UniDateTimePicker1Change(Sender: TObject);
+    procedure UniButton2Click(Sender: TObject);
+    procedure UniButton3Click(Sender: TObject);
+    procedure UniButton4Click(Sender: TObject);
+    procedure UniDateTimePicker2Change(Sender: TObject);
+    procedure UniButton5Click(Sender: TObject);
+    procedure UniButton6Click(Sender: TObject);
+    procedure UniButton7Click(Sender: TObject);
+    procedure UniTabSheet3BeforeActivate(Sender: TObject;
+      var AllowActivate: Boolean);
   private
     { Private declarations }
   public
@@ -44,6 +73,48 @@ begin
   Result := TMainForm(UniMainModule.GetFormInstance(TMainForm));
 end;
 
+// 初始化 ----------------------------------------------------------------------
+//
+procedure TMainForm.UniFormCreate(Sender: TObject);
+begin
+  UniDateTimePicker1.DateTime:=now();
+  UniDateTimePicker2.DateTime:=now();
+  //
+end;
+
+procedure TMainForm.UniTabSheet1BeforeActivate(Sender: TObject;
+  var AllowActivate: Boolean);
+begin
+  // 初始化
+  UniDateTimePicker1.DateTime:=now();
+  UniTreeView1.Items.Clear;
+  UniTreeView2.Items.Clear;
+  // 添加菜单信息
+end;
+
+procedure TMainForm.UniTabSheet2BeforeActivate(Sender: TObject;
+  var AllowActivate: Boolean);
+begin
+  // 初始化
+  UniDateTimePicker2.DateTime:=now();
+  UniTreeView3.Items.Clear;
+  UniTreeView4.Items.Clear;
+  // 添加订餐信息
+end;
+
+procedure TMainForm.UniTabSheet3BeforeActivate(Sender: TObject;
+  var AllowActivate: Boolean);
+begin
+  // 初始化
+  UniEdit1.Clear;
+  UniEdit2.Clear;
+  UniEdit3.Clear;
+end;
+//
+// 初始化结束 ------------------------------------------------------------------
+
+// 密码管理模块 ----------------------------------------------------------------
+//
 procedure TMainForm.UniButton1Click(Sender: TObject);  // 修改密码
 var
   old_pwd,new_pwd:string;
@@ -132,11 +203,57 @@ begin
     ShowMessageN('更改密码过程中碰到问题，请联系管理员');
   end;
 end;
+//
+// 密码管理模块结束 ------------------------------------------------------------
 
-procedure TMainForm.UniFormCreate(Sender: TObject);
+// 订餐模块 --------------------------------------------------------------------
+//
+procedure TMainForm.UniButton2Click(Sender: TObject);
+begin
+  // 单选
+end;
+
+procedure TMainForm.UniButton3Click(Sender: TObject);
+begin
+  // 全选
+end;
+
+procedure TMainForm.UniButton4Click(Sender: TObject);
+begin
+  // 保存订餐信息
+end;
+
+procedure TMainForm.UniDateTimePicker1Change(Sender: TObject);
 begin
   //
 end;
+//
+// 订餐模块结束 ----------------------------------------------------------------
+
+// 退餐模块 --------------------------------------------------------------------
+//
+procedure TMainForm.UniDateTimePicker2Change(Sender: TObject);
+begin
+  // 退餐
+end;
+
+procedure TMainForm.UniButton5Click(Sender: TObject);
+begin
+  // 单退
+end;
+
+procedure TMainForm.UniButton6Click(Sender: TObject);
+begin
+  // 全退
+end;
+
+procedure TMainForm.UniButton7Click(Sender: TObject);
+begin
+  // 删除
+end;
+//
+// 退餐模块结束 ----------------------------------------------------------------
+
 
 initialization
   RegisterAppFormClass(TMainForm);
