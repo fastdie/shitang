@@ -16,7 +16,7 @@ object MainForm: TMainForm
     Width = 852
     Height = 411
     Hint = ''
-    ActivePage = UniTabSheet2
+    ActivePage = UniTabSheet1
     Align = alClient
     TabOrder = 0
     object UniTabSheet1: TUniTabSheet
@@ -93,16 +93,6 @@ object MainForm: TMainForm
           Caption = #20445#23384#35746#39184#20449#24687
           TabOrder = 6
           OnClick = UniButton4Click
-        end
-        object UniButton8: TUniButton
-          Left = 191
-          Top = 296
-          Width = 75
-          Height = 25
-          Hint = ''
-          Caption = 'display'
-          TabOrder = 7
-          OnClick = UniButton8Click
         end
       end
     end

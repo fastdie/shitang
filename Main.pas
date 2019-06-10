@@ -37,7 +37,6 @@ type
     UniButton5: TUniButton;
     UniButton6: TUniButton;
     UniButton7: TUniButton;
-    UniButton8: TUniButton;
     UniTimer1: TUniTimer;
     procedure UniFormCreate(Sender: TObject);
     procedure UniButton1Click(Sender: TObject);
@@ -56,7 +55,6 @@ type
     procedure UniTabSheet3BeforeActivate(Sender: TObject;
       var AllowActivate: Boolean);
     procedure UniTreeView1Change(Sender: TObject; Node: TUniTreeNode);
-    procedure UniButton8Click(Sender: TObject);
     procedure UniTimer1Timer(Sender: TObject);
     procedure UniTreeView3Change(Sender: TObject; Node: TUniTreeNode);
   private
@@ -536,9 +534,48 @@ begin
   UniTreeView3.Items.Clear;
 end;
 
-procedure TMainForm.UniButton7Click(Sender: TObject);
+procedure TMainForm.UniButton7Click(Sender: TObject);  // 删除
+var
+  delete_str,order_kind,food_name:string;
+  i:integer;
 begin
-  // 删除
+  for i := 0 to UniTreeView4.Items.Count-1 do
+    begin
+      delete_str:=UniTreeView4.Items.Item[i].Text;
+      if (pos(':',delete_str)>0) then
+      begin
+        order_kind:=copy(delete_str,1,pos(':',delete_str)-1);  // 获取delete_str前半部分，分隔符为':'
+        food_name:=copy(delete_str,pos(':',delete_str)+1,length(delete_str));  // 获取add_str后半部分，分隔符为':'
+        //ShowMessageN(order_kind+','+food_name);
+        try
+          with MainModule.UniMainModule.exec_query do
+          begin
+            Close;
+            SQL.Clear;
+            SQL.Add('update order_table');
+            SQL.Add('set order_cancel=:order_cancel');
+            SQL.Add('where order_date=:order_date');
+            SQL.Add('and order_kind=:order_kind');
+            SQL.Add('and food_name=:food_name');
+            SQL.Add('and gong_hao=:gong_hao');
+            ParamByName('order_cancel').Value:=FormatDateTime('yyyyMMddhhmmss',now());
+            ParamByName('order_date').Value:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker2.DateTime);
+            ParamByName('order_kind').Value:=order_kind;
+            ParamByName('food_name').Value:=food_name;
+            ParamByName('gong_hao').Value:=login.global_gonghao;
+            Execsql;
+            ShowMessageN('退餐处理成功');
+          end;
+        except
+          ShowMessageN('退餐处理过程中出现错误，请联系管理员');
+          Exit;
+        end;
+      end
+      else begin
+        ShowMessageN('未找到字符分隔符');
+      end;
+    end;
+    UniTreeView4.Items.Clear;
 end;
 
 procedure TMainForm.UniTreeView3Change(Sender: TObject; Node: TUniTreeNode);
@@ -547,20 +584,6 @@ begin
 end;
 //
 // 退餐模块结束 ----------------------------------------------------------------
-
-procedure TMainForm.UniButton8Click(Sender: TObject);   // test
-var
-  a,b:integer;
-  s:string;
-begin
-  a:=UniTreeView1.Items.Count;
-  b:=UniTreeView2.Items.Count;
-  s:=UniTreeView1.Items[0].Text+','+UniTreeView1.Items[1].Text+','+UniTreeView1.Items[2].Text;
-  UniTreeView1.FullExpand;
-  //
-  ShowMessageN(inttostr(a)+','+inttostr(b)+';'+s);
-end;
-
 
 initialization
   RegisterAppFormClass(TMainForm);
