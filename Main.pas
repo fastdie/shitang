@@ -58,9 +58,11 @@ type
     procedure UniTreeView1Change(Sender: TObject; Node: TUniTreeNode);
     procedure UniButton8Click(Sender: TObject);
     procedure UniTimer1Timer(Sender: TObject);
+    procedure UniTreeView3Change(Sender: TObject; Node: TUniTreeNode);
   private
     { Private declarations }
-    SelectedNode : TUniTreeNode;
+    SelectedNode1 : TUniTreeNode;
+    SelectedNode2 : TUniTreeNode;
   public
     { Public declarations }
   end;
@@ -340,13 +342,13 @@ var
   add_flag:boolean;
 begin
   add_flag:=true;
-  if (SelectedNode.Parent = nil) then
+  if (SelectedNode1.Parent = nil) then
   begin
     // do nothing
   end
   else begin
-    order_kind:=SelectedNode.Parent.Text;
-    food_name:=SelectedNode.Text;
+    order_kind:=SelectedNode1.Parent.Text;
+    food_name:=SelectedNode1.Text;
     add_str:=order_kind+':'+food_name;
     //
     for i := 0 to UniTreeView2.Items.Count-1 do
@@ -459,31 +461,89 @@ end;
 
 procedure TMainForm.UniTreeView1Change(Sender: TObject; Node: TUniTreeNode);
 begin
-  SelectedNode:=Node;
+  SelectedNode1:=Node;
 end;
 //
 // 订餐模块结束 ----------------------------------------------------------------
 
 // 退餐模块 --------------------------------------------------------------------
 //
-procedure TMainForm.UniDateTimePicker2Change(Sender: TObject);
+procedure TMainForm.UniDateTimePicker2Change(Sender: TObject);  // 退餐
+var
+  order_date:string;
+  order_kind,food_name:string;
+  i:integer;
 begin
-  // 退餐
+  if UniDateTimePicker2.DateTime<=now() then
+  begin
+    ShowMessageN('退餐时间不能选择当天或之前');
+  end
+  else begin
+    order_date:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker2.DateTime);
+    UniTreeview3.Items.Clear;
+    UniTreeView4.Items.Clear;
+    //
+    with MainModule.UniMainModule.tuican_query do
+    begin
+      Close;
+      SQL.Clear;
+      SQL.Add('select order_kind,food_name from order_table');
+      SQL.Add('where order_date=:order_date');
+      SQL.Add('and gong_hao=:gong_hao');
+      SQL.Add('and order_cancel=:order_cancel');
+      SQL.Add('order by order_kind,food_name');
+      ParamByName('order_date').Value:=order_date;
+      ParamByName('gong_hao').Value:=login.global_gonghao;
+      ParamByName('order_cancel').Value:='/';
+      Open;
+      First;
+      if RecordCount>0 then
+      begin
+        for i := 0 to RecordCount-1 do
+        begin
+          order_kind:=FieldByName('order_kind').AsString;
+          food_name:=FieldByName('food_name').AsString;
+          UniTreeView3.Items.Add(nil,order_kind+':'+food_name);
+          Next;
+        end;
+      end;
+    end;
+  end;
 end;
 
-procedure TMainForm.UniButton5Click(Sender: TObject);
+procedure TMainForm.UniButton5Click(Sender: TObject);  // 单退
+var
+  add_str:string;
 begin
-  // 单退
+  add_str:=SelectedNode2.Text;
+  UniTreeView4.Items.Add(nil,add_str);
+  UniTreeView3.Items.Delete(SelectedNode2);
 end;
 
-procedure TMainForm.UniButton6Click(Sender: TObject);
+procedure TMainForm.UniButton6Click(Sender: TObject);  // 全退
+var
+  add_str:string;
+  i:integer;
 begin
-  // 全退
+  UniTreeView4.Items.Clear;
+  //
+  for i := 0 to UniTreeView3.Items.Count-1 do
+  begin
+    add_str:=UniTreeView3.Items.Item[i].Text;
+    UniTreeView4.Items.Add(nil,add_str);
+  end;
+  //
+  UniTreeView3.Items.Clear;
 end;
 
 procedure TMainForm.UniButton7Click(Sender: TObject);
 begin
   // 删除
+end;
+
+procedure TMainForm.UniTreeView3Change(Sender: TObject; Node: TUniTreeNode);
+begin
+  SelectedNode2:=Node;
 end;
 //
 // 退餐模块结束 ----------------------------------------------------------------

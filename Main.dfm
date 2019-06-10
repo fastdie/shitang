@@ -16,7 +16,7 @@ object MainForm: TMainForm
     Width = 852
     Height = 411
     Hint = ''
-    ActivePage = UniTabSheet1
+    ActivePage = UniTabSheet2
     Align = alClient
     TabOrder = 0
     object UniTabSheet1: TUniTabSheet
@@ -138,6 +138,7 @@ object MainForm: TMainForm
           Items.FontData = {0100000000}
           TabOrder = 2
           Color = clWindow
+          OnChange = UniTreeView3Change
         end
         object UniTreeView4: TUniTreeView
           Left = 280
