@@ -26,15 +26,15 @@ object MainForm: TMainForm
       object UniGroupBox2: TUniGroupBox
         Left = 10
         Top = 10
-        Width = 503
-        Height = 359
+        Width = 340
+        Height = 360
         Hint = ''
         Caption = #23558#33756#21333#20449#24687#20174#24038#26639#31227#33267#21491#26639#65292#28857#20445#23384#21363#23436#25104#35746#39184#24037#20316
         TabOrder = 0
         object UniDateTimePicker1: TUniDateTimePicker
           Left = 10
           Top = 24
-          Width = 175
+          Width = 120
           Hint = ''
           DateTime = 43625.000000000000000000
           DateFormat = 'yyyy-MM-dd'
@@ -45,8 +45,8 @@ object MainForm: TMainForm
         object UniTreeView1: TUniTreeView
           Left = 10
           Top = 52
-          Width = 175
-          Height = 293
+          Width = 120
+          Height = 290
           Hint = ''
           Items.FontData = {0100000000}
           AutoExpand = True
@@ -55,19 +55,19 @@ object MainForm: TMainForm
           OnChange = UniTreeView1Change
         end
         object UniTreeView2: TUniTreeView
-          Left = 280
+          Left = 200
           Top = 52
-          Width = 177
-          Height = 293
+          Width = 120
+          Height = 290
           Hint = ''
           Items.FontData = {0100000000}
           TabOrder = 3
           Color = clWindow
         end
         object UniButton2: TUniButton
-          Left = 191
+          Left = 145
           Top = 111
-          Width = 75
+          Width = 40
           Height = 25
           Hint = ''
           Caption = '>>'
@@ -75,9 +75,9 @@ object MainForm: TMainForm
           OnClick = UniButton2Click
         end
         object UniButton3: TUniButton
-          Left = 191
+          Left = 145
           Top = 224
-          Width = 75
+          Width = 40
           Height = 25
           Hint = ''
           Caption = '>>>>'
@@ -85,9 +85,9 @@ object MainForm: TMainForm
           OnClick = UniButton3Click
         end
         object UniButton4: TUniButton
-          Left = 280
+          Left = 200
           Top = 21
-          Width = 177
+          Width = 120
           Height = 25
           Hint = ''
           Caption = #20445#23384#35746#39184#20449#24687
@@ -103,15 +103,15 @@ object MainForm: TMainForm
       object UniGroupBox3: TUniGroupBox
         Left = 10
         Top = 10
-        Width = 503
-        Height = 359
+        Width = 340
+        Height = 360
         Hint = ''
         Caption = #23558#33756#21333#20449#24687#20174#24038#26639#31227#33267#21491#26639#65292#28857#21024#38500#21363#23436#25104#36864#39184#24037#20316
         TabOrder = 0
         object UniDateTimePicker2: TUniDateTimePicker
           Left = 10
           Top = 24
-          Width = 175
+          Width = 120
           Hint = ''
           DateTime = 43625.000000000000000000
           DateFormat = 'yyyy-MM-dd'
@@ -122,8 +122,8 @@ object MainForm: TMainForm
         object UniTreeView3: TUniTreeView
           Left = 10
           Top = 52
-          Width = 175
-          Height = 293
+          Width = 120
+          Height = 290
           Hint = ''
           Items.FontData = {0100000000}
           TabOrder = 2
@@ -131,19 +131,19 @@ object MainForm: TMainForm
           OnChange = UniTreeView3Change
         end
         object UniTreeView4: TUniTreeView
-          Left = 280
+          Left = 200
           Top = 52
-          Width = 177
-          Height = 293
+          Width = 120
+          Height = 290
           Hint = ''
           Items.FontData = {0100000000}
           TabOrder = 3
           Color = clWindow
         end
         object UniButton5: TUniButton
-          Left = 191
+          Left = 145
           Top = 111
-          Width = 75
+          Width = 40
           Height = 25
           Hint = ''
           Caption = '>>'
@@ -151,9 +151,9 @@ object MainForm: TMainForm
           OnClick = UniButton5Click
         end
         object UniButton6: TUniButton
-          Left = 191
+          Left = 145
           Top = 224
-          Width = 75
+          Width = 40
           Height = 25
           Hint = ''
           Caption = '>>>>'
@@ -161,9 +161,9 @@ object MainForm: TMainForm
           OnClick = UniButton6Click
         end
         object UniButton7: TUniButton
-          Left = 280
+          Left = 200
           Top = 21
-          Width = 177
+          Width = 120
           Height = 25
           Hint = ''
           Caption = #21024#38500#35746#39184#20449#24687
@@ -258,7 +258,7 @@ object MainForm: TMainForm
       ' '
       '}')
     OnTimer = UniTimer1Timer
-    Left = 232
-    Top = 64
+    Left = 160
+    Top = 56
   end
 end
