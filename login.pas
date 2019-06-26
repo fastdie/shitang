@@ -25,10 +25,6 @@ type
     { Public declarations }
   end;
 
-var  // 定义全局变量，用来保存登录用户的工号，用户名，所属部门，用户权限等信息
-  global_gonghao,global_username,global_department,global_authority:string;
-  error_number:integer;
-
 function UniLoginForm1: TUniLoginForm1;
 
 implementation
@@ -70,8 +66,8 @@ begin
          UniEdit1.Clear;
          UniEdit2.Clear;
          //
-         error_number:=error_number+1;
-         if error_number<4 then
+         UniMainModule.error_number:=UniMainModule.error_number+1;
+         if UniMainModule.error_number<4 then
          begin
            ShowMessage('工号或密码不正确，请重新输入');
          end
@@ -80,10 +76,10 @@ begin
          end;
        end
        else begin  // 找到对应记录，将用户信息保存至全局变量
-         global_gonghao:=gong_hao;
-         global_username:=Trim(FieldByName('user_name').AsString);
-         global_department:=Trim(FieldByName('user_department').AsString);
-         global_authority:=Trim(FieldByName('user_authority').AsString);
+         UniMainModule.global_gonghao:=gong_hao;
+         UniMainModule.global_username:=Trim(FieldByName('user_name').AsString);
+         UniMainModule.global_department:=Trim(FieldByName('user_department').AsString);
+         UniMainModule.global_authority:=Trim(FieldByName('user_authority').AsString);
          //
          ModalResult := mrOk;
        end;
@@ -109,11 +105,11 @@ end;
 
 procedure TUniLoginForm1.UniLoginFormCreate(Sender: TObject);
 begin
-  global_gonghao:='';
-  global_username:='';
-  global_department:='';
-  global_authority:='';
-  error_number:=0;
+  UniMainModule.global_gonghao:='';
+  UniMainModule.global_username:='';
+  UniMainModule.global_department:='';
+  UniMainModule.global_authority:='';
+  UniMainModule.error_number:=0;
   UniEdit1.Clear;
   UniEdit2.Clear;
 end;

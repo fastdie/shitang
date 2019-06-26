@@ -38,6 +38,7 @@ type
     UniButton6: TUniButton;
     UniButton7: TUniButton;
     UniTimer1: TUniTimer;
+    UniButton8: TUniButton;
     procedure UniFormCreate(Sender: TObject);
     procedure UniButton1Click(Sender: TObject);
     procedure UniTabSheet1BeforeActivate(Sender: TObject;
@@ -57,6 +58,7 @@ type
     procedure UniTreeView1Change(Sender: TObject; Node: TUniTreeNode);
     procedure UniTimer1Timer(Sender: TObject);
     procedure UniTreeView3Change(Sender: TObject; Node: TUniTreeNode);
+    procedure UniButton8Click(Sender: TObject);
   private
     { Private declarations }
     SelectedNode1 : TUniTreeNode;
@@ -92,7 +94,7 @@ procedure TMainForm.UniTabSheet1BeforeActivate(Sender: TObject;
   var AllowActivate: Boolean);
 begin
   // 初始化
-  UniDateTimePicker1.DateTime:=now();
+  UniDateTimePicker1.DateTime:=now()+1;
   UniTreeView1.Items.Clear;
   UniTreeView2.Items.Clear;
   // 添加菜单信息
@@ -102,7 +104,7 @@ procedure TMainForm.UniTabSheet2BeforeActivate(Sender: TObject;
   var AllowActivate: Boolean);
 begin
   // 初始化
-  UniDateTimePicker2.DateTime:=now();
+  UniDateTimePicker2.DateTime:=now()+1;
   UniTreeView3.Items.Clear;
   UniTreeView4.Items.Clear;
   // 添加订餐信息
@@ -155,7 +157,7 @@ begin
       SQL.Clear;
       SQL.Add('select gong_hao from user_table');
       SQL.Add('where gong_hao=:gong_hao and user_pwd=:user_pwd');
-      ParamByName('gong_hao').Value:=global_gonghao;
+      ParamByName('gong_hao').Value:=UniMainModule.global_gonghao;
       ParamByName('user_pwd').Value:=old_pwd;
       Open;
       if RecordCount>0 then
@@ -202,7 +204,7 @@ begin
       SQL.Add('set user_pwd=:new_pwd');
       SQL.Add('where gong_hao=:gong_hao');
       ParamByName('new_pwd').Value:=new_pwd;
-      ParamByName('gong_hao').Value:=global_gonghao;
+      ParamByName('gong_hao').Value:=UniMainModule.global_gonghao;
       execsql;
     end;
     //
@@ -315,7 +317,7 @@ begin
       SQL.Add('and order_cancel=:order_cancel');
       SQL.Add('order by order_kind,food_name');
       ParamByName('order_date').Value:=order_date;
-      ParamByName('gong_hao').Value:=login.global_gonghao;
+      ParamByName('gong_hao').Value:=UniMainModule.global_gonghao;
       ParamByName('order_cancel').Value:='/';
       Open;
       First;
@@ -401,7 +403,7 @@ begin
         SQL.Add('set order_cancel=:order_cancel');
         SQL.Add('where gong_hao=:gong_hao and order_date=:order_date');
         ParamByName('order_cancel').Value:=FormatDateTime('yyyyMMddhhmmss',now());
-        ParamByName('gong_hao').Value:=global_gonghao;
+        ParamByName('gong_hao').Value:=UniMainModule.global_gonghao;
         ParamByName('order_date').Value:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker1.DateTime);
         Execsql;
       end;
@@ -431,9 +433,9 @@ begin
             SQL.Add(':order_cancel,:remark)');
             ParamByName('order_date').Value:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker1.DateTime);
             ParamByName('order_time').Value:=FormatDateTime('yyyyMMddhhmmss',now());
-            ParamByName('gong_hao').Value:=login.global_gonghao;
-            ParamByName('user_name').Value:=login.global_username;
-            ParamByName('user_department').Value:=login.global_department;
+            ParamByName('gong_hao').Value:=UniMainModule.global_gonghao;
+            ParamByName('user_name').Value:=UniMainModule.global_username;
+            ParamByName('user_department').Value:=UniMainModule.global_department;
             ParamByName('order_kind').Value:=order_kind;
             ParamByName('food_name').Value:=food_name;
             ParamByName('order_cancel').Value:='/';
@@ -491,7 +493,7 @@ begin
       SQL.Add('and order_cancel=:order_cancel');
       SQL.Add('order by order_kind,food_name');
       ParamByName('order_date').Value:=order_date;
-      ParamByName('gong_hao').Value:=login.global_gonghao;
+      ParamByName('gong_hao').Value:=UniMainModule.global_gonghao;
       ParamByName('order_cancel').Value:='/';
       Open;
       First;
@@ -562,7 +564,7 @@ begin
             ParamByName('order_date').Value:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker2.DateTime);
             ParamByName('order_kind').Value:=order_kind;
             ParamByName('food_name').Value:=food_name;
-            ParamByName('gong_hao').Value:=login.global_gonghao;
+            ParamByName('gong_hao').Value:=UniMainModule.global_gonghao;
             Execsql;
             ShowMessageN('退餐处理成功');
           end;
@@ -576,6 +578,11 @@ begin
       end;
     end;
     UniTreeView4.Items.Clear;
+end;
+
+procedure TMainForm.UniButton8Click(Sender: TObject);
+begin
+  ShowMessage('用户名：'+UniMainModule.global_username+';工号：'+UniMainModule.global_gonghao+';部门：'+UniMainModule.global_department+';');
 end;
 
 procedure TMainForm.UniTreeView3Change(Sender: TObject; Node: TUniTreeNode);

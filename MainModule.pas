@@ -16,6 +16,9 @@ type
   private
     { Private declarations }
   public
+    // 定义全局变量，用来保存登录用户的工号，用户名，所属部门，用户权限等信息
+    global_gonghao,global_username,global_department,global_authority:string;
+    error_number:integer;
     { Public declarations }
   end;
 

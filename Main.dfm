@@ -16,7 +16,7 @@ object MainForm: TMainForm
     Width = 852
     Height = 411
     Hint = ''
-    ActivePage = UniTabSheet1
+    ActivePage = UniTabSheet3
     Align = alClient
     TabOrder = 0
     object UniTabSheet1: TUniTabSheet
@@ -250,6 +250,16 @@ object MainForm: TMainForm
         end
       end
     end
+  end
+  object UniButton8: TUniButton
+    Left = 51
+    Top = 288
+    Width = 193
+    Height = 25
+    Hint = ''
+    Caption = #26597#30475#24403#21069#29992#25143#29366#24577
+    TabOrder = 1
+    OnClick = UniButton8Click
   end
   object UniTimer1: TUniTimer
     ClientEvent.Strings = (
