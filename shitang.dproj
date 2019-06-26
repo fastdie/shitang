@@ -94,7 +94,7 @@
         <DCC_UnitSearchPath>C:\Program Files (x86)\FMSoft\Framework\uniGUI\Dcu\Delphi2022;C:\Program Files (x86)\Devart\UniDAC for RAD Studio 10.3\Lib\Win32;C:\Program Files (x86)\Devart\UniDAC for RAD Studio 10.3\Bin\Win32;C:\Program Files (x86)\FMSoft\Framework\uniGUI\Dcu64\Delphi2022;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <DCC_ExeOutput>C:\bin\shitang\</DCC_ExeOutput>
+        <DCC_ExeOutput>C:\compile\shitang\</DCC_ExeOutput>
         <DCC_DcuOutput>C:\Users\HOME\Documents\GitHub\bin\shitang\</DCC_DcuOutput>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">

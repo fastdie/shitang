@@ -182,7 +182,7 @@ object MainForm: TMainForm
         Width = 289
         Height = 317
         Hint = ''
-        Caption = #35831#36755#20837#26087#23494#30721#19982#26032#23494#30721
+        Caption = #35831#36755#20837#21407#23494#30721#19982#26032#23494#30721
         TabOrder = 0
         object UniEdit1: TUniEdit
           Left = 100
@@ -199,7 +199,7 @@ object MainForm: TMainForm
           Width = 48
           Height = 13
           Hint = ''
-          Caption = #26087#23494#30721#65306
+          Caption = #21407#23494#30721#65306
           TabOrder = 2
         end
         object UniLabel2: TUniLabel

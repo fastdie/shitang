@@ -92,7 +92,7 @@ procedure TMainForm.UniTabSheet1BeforeActivate(Sender: TObject;
   var AllowActivate: Boolean);
 begin
   // 初始化
-  UniDateTimePicker1.DateTime:=now()+1;
+  UniDateTimePicker1.DateTime:=now();
   UniTreeView1.Items.Clear;
   UniTreeView2.Items.Clear;
   // 添加菜单信息
@@ -102,7 +102,7 @@ procedure TMainForm.UniTabSheet2BeforeActivate(Sender: TObject;
   var AllowActivate: Boolean);
 begin
   // 初始化
-  UniDateTimePicker2.DateTime:=now()+1;
+  UniDateTimePicker2.DateTime:=now();
   UniTreeView3.Items.Clear;
   UniTreeView4.Items.Clear;
   // 添加订餐信息
