@@ -39,6 +39,7 @@ type
     UniButton7: TUniButton;
     UniTimer1: TUniTimer;
     UniButton8: TUniButton;
+    UniButton9: TUniButton;
     procedure UniFormCreate(Sender: TObject);
     procedure UniButton1Click(Sender: TObject);
     procedure UniTabSheet1BeforeActivate(Sender: TObject;
@@ -59,6 +60,7 @@ type
     procedure UniTimer1Timer(Sender: TObject);
     procedure UniTreeView3Change(Sender: TObject; Node: TUniTreeNode);
     procedure UniButton8Click(Sender: TObject);
+    procedure UniButton9Click(Sender: TObject);
   private
     { Private declarations }
     SelectedNode1 : TUniTreeNode;
@@ -85,8 +87,8 @@ end;
 //
 procedure TMainForm.UniFormCreate(Sender: TObject);
 begin
-  UniDateTimePicker1.DateTime:=now()+1;
-  UniDateTimePicker2.DateTime:=now()+1;
+  UniDateTimePicker1.DateTime:=now();
+  UniDateTimePicker2.DateTime:=now();
   //
 end;
 
@@ -94,7 +96,7 @@ procedure TMainForm.UniTabSheet1BeforeActivate(Sender: TObject;
   var AllowActivate: Boolean);
 begin
   // 初始化
-  UniDateTimePicker1.DateTime:=now()+1;
+  UniDateTimePicker1.DateTime:=now();
   UniTreeView1.Items.Clear;
   UniTreeView2.Items.Clear;
   // 添加菜单信息
@@ -104,7 +106,7 @@ procedure TMainForm.UniTabSheet2BeforeActivate(Sender: TObject;
   var AllowActivate: Boolean);
 begin
   // 初始化
-  UniDateTimePicker2.DateTime:=now()+1;
+  UniDateTimePicker2.DateTime:=now();
   UniTreeView3.Items.Clear;
   UniTreeView4.Items.Clear;
   // 添加订餐信息
@@ -216,6 +218,12 @@ begin
     ShowMessageN('更改密码过程中碰到问题，请联系管理员');
   end;
 end;
+
+procedure TMainForm.UniButton8Click(Sender: TObject);
+begin
+  ShowMessage('用户名：'+UniMainModule.global_username+';工号：'+UniMainModule.global_gonghao+';部门：'+UniMainModule.global_department+';');
+end;
+
 //
 // 密码管理模块结束 ------------------------------------------------------------
 
@@ -230,7 +238,7 @@ var
 begin
   if UniDateTimePicker1.DateTime<=now() then
   begin
-    ShowMessageN('订餐时间不能选择当天或之前');
+    //ShowMessageN('订餐时间不能选择当天或之前');
   end
   else begin
     order_date:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker1.DateTime);
@@ -366,6 +374,14 @@ begin
   end;
 end;
 
+procedure TMainForm.UniButton9Click(Sender: TObject);  // 单选撤销
+var
+  delete_node:TUniTreeNode;
+begin
+  delete_node:=UniTreeView2.Selected;
+  UniTreeView2.Items.Delete(delete_node);
+end;
+
 procedure TMainForm.UniButton3Click(Sender: TObject);  // 全选
 var
   order_kind,food_name,add_str:string;
@@ -476,7 +492,7 @@ var
 begin
   if UniDateTimePicker2.DateTime<=now() then
   begin
-    ShowMessageN('退餐时间不能选择当天或之前');
+    //ShowMessageN('退餐时间不能选择当天或之前');
   end
   else begin
     order_date:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker2.DateTime);
@@ -578,11 +594,6 @@ begin
       end;
     end;
     UniTreeView4.Items.Clear;
-end;
-
-procedure TMainForm.UniButton8Click(Sender: TObject);
-begin
-  ShowMessage('用户名：'+UniMainModule.global_username+';工号：'+UniMainModule.global_gonghao+';部门：'+UniMainModule.global_department+';');
 end;
 
 procedure TMainForm.UniTreeView3Change(Sender: TObject; Node: TUniTreeNode);

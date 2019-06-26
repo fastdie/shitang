@@ -16,7 +16,7 @@ object MainForm: TMainForm
     Width = 852
     Height = 411
     Hint = ''
-    ActivePage = UniTabSheet3
+    ActivePage = UniTabSheet1
     Align = alClient
     TabOrder = 0
     object UniTabSheet1: TUniTabSheet
@@ -55,7 +55,7 @@ object MainForm: TMainForm
           OnChange = UniTreeView1Change
         end
         object UniTreeView2: TUniTreeView
-          Left = 200
+          Left = 190
           Top = 52
           Width = 120
           Height = 290
@@ -67,25 +67,25 @@ object MainForm: TMainForm
         object UniButton2: TUniButton
           Left = 145
           Top = 111
-          Width = 40
+          Width = 30
           Height = 25
           Hint = ''
-          Caption = '>>'
+          Caption = '>'
           TabOrder = 4
           OnClick = UniButton2Click
         end
         object UniButton3: TUniButton
           Left = 145
           Top = 224
-          Width = 40
+          Width = 30
           Height = 25
           Hint = ''
-          Caption = '>>>>'
+          Caption = '>>'
           TabOrder = 5
           OnClick = UniButton3Click
         end
         object UniButton4: TUniButton
-          Left = 200
+          Left = 190
           Top = 21
           Width = 120
           Height = 25
@@ -93,6 +93,16 @@ object MainForm: TMainForm
           Caption = #20445#23384#35746#39184#20449#24687
           TabOrder = 6
           OnClick = UniButton4Click
+        end
+        object UniButton9: TUniButton
+          Left = 145
+          Top = 167
+          Width = 30
+          Height = 25
+          Hint = ''
+          Caption = '<'
+          TabOrder = 7
+          OnClick = UniButton9Click
         end
       end
     end
@@ -131,7 +141,7 @@ object MainForm: TMainForm
           OnChange = UniTreeView3Change
         end
         object UniTreeView4: TUniTreeView
-          Left = 200
+          Left = 190
           Top = 52
           Width = 120
           Height = 290
@@ -143,25 +153,25 @@ object MainForm: TMainForm
         object UniButton5: TUniButton
           Left = 145
           Top = 111
-          Width = 40
+          Width = 30
           Height = 25
           Hint = ''
-          Caption = '>>'
+          Caption = '>'
           TabOrder = 4
           OnClick = UniButton5Click
         end
         object UniButton6: TUniButton
           Left = 145
           Top = 224
-          Width = 40
+          Width = 30
           Height = 25
           Hint = ''
-          Caption = '>>>>'
+          Caption = '>>'
           TabOrder = 5
           OnClick = UniButton6Click
         end
         object UniButton7: TUniButton
-          Left = 200
+          Left = 190
           Top = 21
           Width = 120
           Height = 25
@@ -248,18 +258,18 @@ object MainForm: TMainForm
           TabOrder = 7
           OnClick = UniButton1Click
         end
+        object UniButton8: TUniButton
+          Left = 27
+          Top = 245
+          Width = 193
+          Height = 25
+          Hint = ''
+          Caption = #26597#30475#24403#21069#29992#25143#29366#24577
+          TabOrder = 8
+          OnClick = UniButton8Click
+        end
       end
     end
-  end
-  object UniButton8: TUniButton
-    Left = 51
-    Top = 288
-    Width = 193
-    Height = 25
-    Hint = ''
-    Caption = #26597#30475#24403#21069#29992#25143#29366#24577
-    TabOrder = 1
-    OnClick = UniButton8Click
   end
   object UniTimer1: TUniTimer
     ClientEvent.Strings = (
