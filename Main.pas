@@ -7,7 +7,7 @@ uses
   Controls, Forms, uniGUITypes, uniGUIAbstractClasses,
   uniGUIClasses, uniGUIRegClasses, uniGUIForm, uniPanel, uniPageControl,
   uniGUIBaseClasses, uniButton, uniLabel, uniEdit, uniGroupBox, uniStatusBar,
-  uniTreeView, uniDateTimePicker, uniTimer;
+  uniTreeView, uniDateTimePicker, uniTimer, uniMemo;
 
 type
   TMainForm = class(TUniForm)
@@ -40,6 +40,9 @@ type
     UniTimer1: TUniTimer;
     UniButton8: TUniButton;
     UniButton9: TUniButton;
+    UniTabSheet4: TUniTabSheet;
+    UniDateTimePicker3: TUniDateTimePicker;
+    UniMemo1: TUniMemo;
     procedure UniFormCreate(Sender: TObject);
     procedure UniButton1Click(Sender: TObject);
     procedure UniTabSheet1BeforeActivate(Sender: TObject;
@@ -61,6 +64,7 @@ type
     procedure UniTreeView3Change(Sender: TObject; Node: TUniTreeNode);
     procedure UniButton8Click(Sender: TObject);
     procedure UniButton9Click(Sender: TObject);
+    procedure UniDateTimePicker3Change(Sender: TObject);
   private
     { Private declarations }
     SelectedNode1 : TUniTreeNode;
@@ -89,6 +93,14 @@ procedure TMainForm.UniFormCreate(Sender: TObject);
 begin
   UniDateTimePicker1.DateTime:=now();
   UniDateTimePicker2.DateTime:=now();
+  if UniMainModule.global_authority='食堂管理员' then
+  begin
+    UniTabSheet1.TabVisible:=false;
+    UniTabSheet2.TabVisible:=false;
+  end
+  else begin
+    UniTabSheet4.TabVisible:=false;
+  end;
   //
 end;
 
@@ -522,6 +534,95 @@ begin
           UniTreeView3.Items.Add(nil,order_kind+':'+food_name);
           Next;
         end;
+      end;
+    end;
+  end;
+end;
+
+procedure TMainForm.UniDateTimePicker3Change(Sender: TObject);
+var
+  input_date:string;
+  i:integer;
+  display_str:string;
+begin
+  input_date:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker3.DateTime);
+  UniMemo1.Lines.Clear;
+  //
+  with UniMainModule.exec_query do  // 列出早餐数据
+  begin
+    Close;
+    SQL.Clear;
+    SQL.Add('select food_name,count(food_name) as food_number from order_table');
+    SQL.Add('where order_date=:order_date');
+    SQL.Add('and order_kind=:order_kind');
+    SQL.Add('and order_cancel=:order_cancel');
+    SQL.Add('group by food_name');
+    ParamByName('order_date').Value:=input_date;
+    ParamByName('order_kind').Value:='早餐';
+    ParamByName('order_cancel').Value:='/';
+    Open;
+    First;
+    if RecordCount>0 then
+    begin
+      UniMemo1.Lines.Add(input_date+' 订餐信息如下：');
+      UniMemo1.Lines.Add('早餐数据：');
+      for i := 0 to RecordCount-1 do
+      begin
+        display_str:=Fields.FieldByName('food_name').AsString+' = '+Fields.FieldByName('food_number').AsString;
+        UniMemo1.Lines.Add(display_str);
+        Next;
+      end;
+    end;
+  end;
+  //
+  with UniMainModule.exec_query do  // 列出午餐数据
+  begin
+    Close;
+    SQL.Clear;
+    SQL.Add('select food_name,count(food_name) as food_number from order_table');
+    SQL.Add('where order_date=:order_date');
+    SQL.Add('and order_kind=:order_kind');
+    SQL.Add('and order_cancel=:order_cancel');
+    SQL.Add('group by food_name');
+    ParamByName('order_date').Value:=input_date;
+    ParamByName('order_kind').Value:='午餐';
+    ParamByName('order_cancel').Value:='/';
+    Open;
+    First;
+    if RecordCount>0 then
+    begin
+      UniMemo1.Lines.Add('午餐数据：');
+      for i := 0 to RecordCount-1 do
+      begin
+        display_str:=Fields.FieldByName('food_name').AsString+' = '+Fields.FieldByName('food_number').AsString;
+        UniMemo1.Lines.Add(display_str);
+        Next;
+      end;
+    end;
+  end;
+  //
+  with UniMainModule.exec_query do  // 列出晚餐数据
+  begin
+    Close;
+    SQL.Clear;
+    SQL.Add('select food_name,count(food_name) as food_number from order_table');
+    SQL.Add('where order_date=:order_date');
+    SQL.Add('and order_kind=:order_kind');
+    SQL.Add('and order_cancel=:order_cancel');
+    SQL.Add('group by food_name');
+    ParamByName('order_date').Value:=input_date;
+    ParamByName('order_kind').Value:='晚餐';
+    ParamByName('order_cancel').Value:='/';
+    Open;
+    First;
+    if RecordCount>0 then
+    begin
+      UniMemo1.Lines.Add('晚餐数据：');
+      for i := 0 to RecordCount-1 do
+      begin
+        display_str:=Fields.FieldByName('food_name').AsString+' = '+Fields.FieldByName('food_number').AsString;
+        UniMemo1.Lines.Add(display_str);
+        Next;
       end;
     end;
   end;

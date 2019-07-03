@@ -69,19 +69,23 @@ begin
          UniMainModule.error_number:=UniMainModule.error_number+1;
          if UniMainModule.error_number<4 then
          begin
-           ShowMessage('工号或密码不正确，请重新输入');
+           ShowMessageN('工号或密码不正确，请重新输入');
          end
          else begin
            UniLoginForm1.Close;
          end;
        end
-       else begin  // 找到对应记录，将用户信息保存至全局变量
+       else if RecordCount=1 then  // 找到对应记录，将用户信息保存至全局变量
+       begin
          UniMainModule.global_gonghao:=gong_hao;
          UniMainModule.global_username:=Trim(FieldByName('user_name').AsString);
          UniMainModule.global_department:=Trim(FieldByName('user_department').AsString);
          UniMainModule.global_authority:=Trim(FieldByName('user_authority').AsString);
          //
          ModalResult := mrOk;
+       end
+       else begin
+         ShowMessageN('工号存在异常，请联系管理员');
        end;
      end;
    end;

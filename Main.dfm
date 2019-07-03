@@ -16,7 +16,7 @@ object MainForm: TMainForm
     Width = 852
     Height = 411
     Hint = ''
-    ActivePage = UniTabSheet1
+    ActivePage = UniTabSheet4
     Align = alClient
     TabOrder = 0
     object UniTabSheet1: TUniTabSheet
@@ -270,6 +270,33 @@ object MainForm: TMainForm
         end
       end
     end
+    object UniTabSheet4: TUniTabSheet
+      Hint = ''
+      Caption = #35746#39184#32479#35745
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 852
+      ExplicitHeight = 411
+      object UniDateTimePicker3: TUniDateTimePicker
+        Left = 20
+        Top = 10
+        Width = 200
+        Hint = ''
+        DateTime = 43644.000000000000000000
+        DateFormat = 'yyyy-MM-dd'
+        TimeFormat = 'HH:mm:ss'
+        TabOrder = 0
+        OnChange = UniDateTimePicker3Change
+      end
+      object UniMemo1: TUniMemo
+        Left = 20
+        Top = 40
+        Width = 200
+        Height = 330
+        Hint = ''
+        TabOrder = 1
+      end
+    end
   end
   object UniTimer1: TUniTimer
     ClientEvent.Strings = (
@@ -278,7 +305,7 @@ object MainForm: TMainForm
       ' '
       '}')
     OnTimer = UniTimer1Timer
-    Left = 160
+    Left = 576
     Top = 56
   end
 end

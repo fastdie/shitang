@@ -1,8 +1,10 @@
 object UniMainModule: TUniMainModule
   OldCreateOrder = False
+  BrowserOptions = [boDisableMouseRightClick, boDisableChromeRefresh]
   MonitoredKeys.Keys = <>
-  Height = 630
-  Width = 831
+  EnableSynchronousOperations = True
+  Height = 406
+  Width = 540
   object UniConnection1: TUniConnection
     ProviderName = 'MySQL'
     Port = 3306
@@ -21,8 +23,8 @@ object UniMainModule: TUniMainModule
   end
   object exec_query: TUniQuery
     Connection = UniConnection1
-    Left = 88
-    Top = 200
+    Left = 208
+    Top = 192
   end
   object dingcan_query: TUniQuery
     Connection = UniConnection1
