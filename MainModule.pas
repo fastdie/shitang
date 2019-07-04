@@ -19,12 +19,15 @@ type
     // 定义全局变量，用来保存登录用户的工号，用户名，所属部门，用户权限等信息
     global_gonghao,global_username,global_department,global_authority:string;
     error_number:integer;
+    function GetSysTime: TDateTime;
     { Public declarations }
   end;
 
 function UniMainModule: TUniMainModule;
 
 implementation
+
+
 
 {$R *.dfm}
 
@@ -34,6 +37,18 @@ uses
 function UniMainModule: TUniMainModule;
 begin
   Result := TUniMainModule(UniApplication.UniMainModule)
+end;
+
+function TUniMainModule.GetSysTime: TDateTime;
+begin
+  with UniMainModule.exec_query do
+  begin
+    Close;
+    SQL.Clear;
+    SQL.Add('select now() as SysTime');
+    Open;
+    Result:=FieldByName('SysTime').AsDateTime;
+  end;
 end;
 
 initialization

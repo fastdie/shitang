@@ -30,45 +30,37 @@ type
     UniButton2: TUniButton;
     UniButton3: TUniButton;
     UniButton4: TUniButton;
-    UniGroupBox3: TUniGroupBox;
-    UniDateTimePicker2: TUniDateTimePicker;
-    UniTreeView3: TUniTreeView;
-    UniTreeView4: TUniTreeView;
-    UniButton5: TUniButton;
-    UniButton6: TUniButton;
-    UniButton7: TUniButton;
     UniTimer1: TUniTimer;
     UniButton8: TUniButton;
     UniButton9: TUniButton;
     UniTabSheet4: TUniTabSheet;
     UniDateTimePicker3: TUniDateTimePicker;
     UniMemo1: TUniMemo;
+    UniDateTimePicker2: TUniDateTimePicker;
+    UniMemo2: TUniMemo;
     procedure UniFormCreate(Sender: TObject);
     procedure UniButton1Click(Sender: TObject);
     procedure UniTabSheet1BeforeActivate(Sender: TObject;
-      var AllowActivate: Boolean);
-    procedure UniTabSheet2BeforeActivate(Sender: TObject;
       var AllowActivate: Boolean);
     procedure UniDateTimePicker1Change(Sender: TObject);
     procedure UniButton2Click(Sender: TObject);
     procedure UniButton3Click(Sender: TObject);
     procedure UniButton4Click(Sender: TObject);
-    procedure UniDateTimePicker2Change(Sender: TObject);
-    procedure UniButton5Click(Sender: TObject);
-    procedure UniButton6Click(Sender: TObject);
-    procedure UniButton7Click(Sender: TObject);
     procedure UniTabSheet3BeforeActivate(Sender: TObject;
       var AllowActivate: Boolean);
     procedure UniTreeView1Change(Sender: TObject; Node: TUniTreeNode);
     procedure UniTimer1Timer(Sender: TObject);
-    procedure UniTreeView3Change(Sender: TObject; Node: TUniTreeNode);
     procedure UniButton8Click(Sender: TObject);
     procedure UniButton9Click(Sender: TObject);
     procedure UniDateTimePicker3Change(Sender: TObject);
+    procedure UniTabSheet2BeforeActivate(Sender: TObject;
+      var AllowActivate: Boolean);
+    procedure UniTabSheet4BeforeActivate(Sender: TObject;
+      var AllowActivate: Boolean);
+    procedure UniDateTimePicker2Change(Sender: TObject);
   private
     { Private declarations }
     SelectedNode1 : TUniTreeNode;
-    SelectedNode2 : TUniTreeNode;
   public
     { Public declarations }
   end;
@@ -89,10 +81,9 @@ end;
 
 // 初始化 ----------------------------------------------------------------------
 //
-procedure TMainForm.UniFormCreate(Sender: TObject);
+procedure TMainForm.UniFormCreate(Sender: TObject);  // 根据用户权限决定显示页面范围
 begin
   UniDateTimePicker1.DateTime:=now();
-  UniDateTimePicker2.DateTime:=now();
   if UniMainModule.global_authority='食堂管理员' then
   begin
     UniTabSheet1.TabVisible:=false;
@@ -104,7 +95,7 @@ begin
   //
 end;
 
-procedure TMainForm.UniTabSheet1BeforeActivate(Sender: TObject;
+procedure TMainForm.UniTabSheet1BeforeActivate(Sender: TObject;  // 订餐/退餐页面初始化
   var AllowActivate: Boolean);
 begin
   // 初始化
@@ -114,23 +105,27 @@ begin
   // 添加菜单信息
 end;
 
-procedure TMainForm.UniTabSheet2BeforeActivate(Sender: TObject;
+procedure TMainForm.UniTabSheet2BeforeActivate(Sender: TObject;  // 查询页面初始化
   var AllowActivate: Boolean);
 begin
-  // 初始化
   UniDateTimePicker2.DateTime:=now();
-  UniTreeView3.Items.Clear;
-  UniTreeView4.Items.Clear;
-  // 添加订餐信息
+  UniMemo2.Clear;
 end;
 
-procedure TMainForm.UniTabSheet3BeforeActivate(Sender: TObject;
+procedure TMainForm.UniTabSheet3BeforeActivate(Sender: TObject;  // 修改密码页面初始化
   var AllowActivate: Boolean);
 begin
   // 初始化
   UniEdit1.Clear;
   UniEdit2.Clear;
   UniEdit3.Clear;
+end;
+
+procedure TMainForm.UniTabSheet4BeforeActivate(Sender: TObject;  // 查询统计页面初始化
+  var AllowActivate: Boolean);
+begin
+  UniDateTimePicker3.DateTime:=now();
+  UniMemo1.Clear;
 end;
 
 procedure TMainForm.UniTimer1Timer(Sender: TObject);
@@ -247,109 +242,161 @@ var
   order_date:string;
   order_kind,food_name:string;
   i:integer;
+  server_time:TDateTime;
+  date_str,time_str:string;
 begin
-  if UniDateTimePicker1.DateTime<=now() then
+  server_time:=UniMainModule.GetSysTime;
+  date_str:=FormatDateTime('yyyyMMdd',server_time);
+  time_str:=FormatDateTime('hhmmss',server_time);
+  //
+  if (strtoint(time_str)>=190000) and (strtoint(time_str)<=235959) then  // 晚七点以后
   begin
-    //ShowMessageN('订餐时间不能选择当天或之前');
+    // 提示不允许订餐
+    ShowMessageN('晚七点以后不允许订餐，请谅解');
   end
   else begin
-    order_date:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker1.DateTime);
-    UniTreeview1.Items.Clear;
-    UniTreeView2.Items.Clear;
-    //
-    with UniTreeview1 do
+    // 在允许订餐时间范围内，开始检查日期
+    if strtoint(FormatDateTime('yyyyMMdd',UniDateTimePicker1.DateTime))>strtoint(date_str) then  // 选择日期大于服务器当日日期
     begin
-      mytreenode1:=Items.Add(nil,'早餐');
-      mytreenode2:=Items.Add(nil,'午餐');
-      mytreenode3:=Items.Add(nil,'晚餐');
-    end;
-    //
-    with MainModule.UniMainModule.dingcan_query do  // 添加早餐
-    begin
-      Close;
-      SQL.Clear;
-      SQL.Add('select food_name from menulist_table');
-      SQL.Add('where order_date=:order_date');
-      SQL.Add('and order_kind=:order_kind');
-      SQL.Add('order by food_name');
-      ParamByName('order_date').Value:=order_date;
-      ParamByName('order_kind').Value:='早餐';
-      Open;
-      if RecordCount>0 then
+      // 允许订餐，开始列出选择日期的菜品信息
+      order_date:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker1.DateTime);
+      UniTreeview1.Items.Clear;
+      UniTreeView2.Items.Clear;
+      //
+      with UniTreeview1 do  // 添加rootnode
       begin
-        for i := 0 to RecordCount-1 do
+        mytreenode1:=Items.Add(nil,'早餐');
+        mytreenode2:=Items.Add(nil,'午餐');
+        mytreenode3:=Items.Add(nil,'晚餐');
+      end;
+      //
+      with MainModule.UniMainModule.dingcan_query do  // 添加早餐
+      begin
+        Close;
+        SQL.Clear;
+        SQL.Add('select food_name from menulist_table');
+        SQL.Add('where order_date=:order_date');
+        SQL.Add('and order_kind=:order_kind');
+        SQL.Add('order by food_name');
+        ParamByName('order_date').Value:=order_date;
+        ParamByName('order_kind').Value:='早餐';
+        Open;
+        if RecordCount>0 then
         begin
-          UniTreeView1.Items.AddChild(mytreenode1,FieldByName('food_name').AsString);
-          Next;
+          for i := 0 to RecordCount-1 do
+          begin
+            UniTreeView1.Items.AddChild(mytreenode1,FieldByName('food_name').AsString);
+            Next;
+          end;
         end;
       end;
-    end;
-    //
-    with MainModule.UniMainModule.dingcan_query do  // 添加午餐
-    begin
-      Close;
-      SQL.Clear;
-      SQL.Add('select food_name from menulist_table');
-      SQL.Add('where order_date=:order_date');
-      SQL.Add('and order_kind=:order_kind');
-      SQL.Add('order by food_name');
-      ParamByName('order_date').Value:=order_date;
-      ParamByName('order_kind').Value:='午餐';
-      Open;
-      if RecordCount>0 then
+      //
+      with MainModule.UniMainModule.dingcan_query do  // 添加午餐
       begin
-        for i := 0 to RecordCount-1 do
+        Close;
+        SQL.Clear;
+        SQL.Add('select food_name from menulist_table');
+        SQL.Add('where order_date=:order_date');
+        SQL.Add('and order_kind=:order_kind');
+        SQL.Add('order by food_name');
+        ParamByName('order_date').Value:=order_date;
+        ParamByName('order_kind').Value:='午餐';
+        Open;
+        if RecordCount>0 then
         begin
-          UniTreeView1.Items.AddChild(mytreenode2,FieldByName('food_name').AsString);
-          Next;
+          for i := 0 to RecordCount-1 do
+          begin
+            UniTreeView1.Items.AddChild(mytreenode2,FieldByName('food_name').AsString);
+            Next;
+          end;
         end;
       end;
-    end;
-    //
-    with MainModule.UniMainModule.dingcan_query do  // 添加晚餐
-    begin
-      Close;
-      SQL.Clear;
-      SQL.Add('select food_name from menulist_table');
-      SQL.Add('where order_date=:order_date');
-      SQL.Add('and order_kind=:order_kind');
-      SQL.Add('order by food_name');
-      ParamByName('order_date').Value:=order_date;
-      ParamByName('order_kind').Value:='晚餐';
-      Open;
-      if RecordCount>0 then
+      //
+      with MainModule.UniMainModule.dingcan_query do  // 添加晚餐
       begin
-        for i := 0 to RecordCount-1 do
+        Close;
+        SQL.Clear;
+        SQL.Add('select food_name from menulist_table');
+        SQL.Add('where order_date=:order_date');
+        SQL.Add('and order_kind=:order_kind');
+        SQL.Add('order by food_name');
+        ParamByName('order_date').Value:=order_date;
+        ParamByName('order_kind').Value:='晚餐';
+        Open;
+        if RecordCount>0 then
         begin
-          UniTreeView1.Items.AddChild(mytreenode3,FieldByName('food_name').AsString);
-          Next;
+          for i := 0 to RecordCount-1 do
+          begin
+            UniTreeView1.Items.AddChild(mytreenode3,FieldByName('food_name').AsString);
+            Next;
+          end;
         end;
       end;
-    end;
-    //
-    with MainModule.UniMainModule.exec_query do
-    begin
-      Close;
-      SQL.Clear;
-      SQL.Add('select order_kind,food_name from order_table');
-      SQL.Add('where order_date=:order_date');
-      SQL.Add('and gong_hao=:gong_hao');
-      SQL.Add('and order_cancel=:order_cancel');
-      SQL.Add('order by order_kind,food_name');
-      ParamByName('order_date').Value:=order_date;
-      ParamByName('gong_hao').Value:=UniMainModule.global_gonghao;
-      ParamByName('order_cancel').Value:='/';
-      Open;
-      First;
-      if RecordCount>0 then
+      //
+      with MainModule.UniMainModule.exec_query do  // 在右侧栏目添加已订餐信息
       begin
-        for i := 0 to RecordCount-1 do
+        Close;
+        SQL.Clear;
+        SQL.Add('select order_kind,food_name from order_table');
+        SQL.Add('where order_date=:order_date');
+        SQL.Add('and gong_hao=:gong_hao');
+        SQL.Add('and order_cancel=:order_cancel');
+        SQL.Add('order by order_kind,food_name');
+        ParamByName('order_date').Value:=order_date;
+        ParamByName('gong_hao').Value:=UniMainModule.global_gonghao;
+        ParamByName('order_cancel').Value:='/';
+        Open;
+        First;
+        if RecordCount>0 then
         begin
-          order_kind:=FieldByName('order_kind').AsString;
-          food_name:=FieldByName('food_name').AsString;
-          UniTreeView2.Items.Add(nil,order_kind+':'+food_name);
-          Next;
+          for i := 0 to RecordCount-1 do
+          begin
+            order_kind:=FieldByName('order_kind').AsString;
+            food_name:=FieldByName('food_name').AsString;
+            UniTreeView2.Items.Add(nil,order_kind+':'+food_name);
+            Next;
+         end;
         end;
+      end;
+    end
+    else begin  // 提示不能选择当天或之前
+      UniTreeView1.Items.Clear;
+      UniTreeView2.Items.Clear;
+      ShowMessageN('订餐时间不能选择当天或之前');
+    end;
+  end;
+end;
+
+procedure TMainForm.UniDateTimePicker2Change(Sender: TObject);  // 查询个人订餐数据
+var
+  input_date:string;
+  i:integer;
+  order_kind,food_name:string;
+begin
+  input_date:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker2.DateTime);
+  //
+  with MainModule.UniMainModule.exec_query do  // 在右侧栏目添加已订餐信息
+  begin
+    Close;
+    SQL.Clear;
+    SQL.Add('select order_kind,food_name from order_table');
+    SQL.Add('where order_date=:order_date');
+    SQL.Add('and gong_hao=:gong_hao');
+    SQL.Add('and order_cancel=:order_cancel');
+    SQL.Add('order by order_kind,food_name');
+    ParamByName('order_date').Value:=input_date;
+    ParamByName('gong_hao').Value:=UniMainModule.global_gonghao;
+    ParamByName('order_cancel').Value:='/';
+    Open;
+    First;
+    if RecordCount>0 then
+    begin
+      for i := 0 to RecordCount-1 do
+      begin
+        order_kind:=FieldByName('order_kind').AsString;
+        food_name:=FieldByName('food_name').AsString;
+        UniMemo2.Lines.Add(order_kind+':'+food_name);
+        Next;
       end;
     end;
   end;
@@ -362,26 +409,26 @@ var
   add_flag:boolean;
 begin
   add_flag:=true;
-  if (SelectedNode1.Parent = nil) then
+  if (SelectedNode1.Parent = nil) then  // 选中了rootnode
   begin
     // do nothing
   end
-  else begin
+  else begin  // 选中了菜品信息
     order_kind:=SelectedNode1.Parent.Text;
     food_name:=SelectedNode1.Text;
     add_str:=order_kind+':'+food_name;
     //
-    for i := 0 to UniTreeView2.Items.Count-1 do
+    for i := 0 to UniTreeView2.Items.Count-1 do  // 检查选中菜品信息在右侧是否已经存在
     begin
-      if (UniTreeView2.Items.Item[i].Text=add_str) then
+      if (UniTreeView2.Items.Item[i].Text=add_str) then // 右侧存在选中菜品，将添加标志设为false
       begin
         add_flag:=false;
       end;
     end;
     //
-    if add_flag then
+    if add_flag then // 检查完毕，右侧不存在选中菜品
     begin
-      UniTreeView2.Items.Add(nil,add_str);
+      UniTreeView2.Items.Add(nil,add_str);  // 执行添加操作
     end;
   end;
 end;
@@ -399,9 +446,9 @@ var
   order_kind,food_name,add_str:string;
   i:integer;
 begin
-  UniTreeView2.Items.Clear;
+  UniTreeView2.Items.Clear;  // 右侧全清空
   //
-  for i := 0 to UniTreeView1.Items.Count-1 do
+  for i := 0 to UniTreeView1.Items.Count-1 do  // 执行全选添加操作
   begin
     if (UniTreeView1.Items.Item[i].Parent<>nil) then
     begin
@@ -494,51 +541,8 @@ end;
 //
 // 订餐模块结束 ----------------------------------------------------------------
 
-// 退餐模块 --------------------------------------------------------------------
+// 查询模块 --------------------------------------------------------------------
 //
-procedure TMainForm.UniDateTimePicker2Change(Sender: TObject);  // 退餐
-var
-  order_date:string;
-  order_kind,food_name:string;
-  i:integer;
-begin
-  if UniDateTimePicker2.DateTime<=now() then
-  begin
-    //ShowMessageN('退餐时间不能选择当天或之前');
-  end
-  else begin
-    order_date:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker2.DateTime);
-    UniTreeview3.Items.Clear;
-    UniTreeView4.Items.Clear;
-    //
-    with MainModule.UniMainModule.tuican_query do
-    begin
-      Close;
-      SQL.Clear;
-      SQL.Add('select order_kind,food_name from order_table');
-      SQL.Add('where order_date=:order_date');
-      SQL.Add('and gong_hao=:gong_hao');
-      SQL.Add('and order_cancel=:order_cancel');
-      SQL.Add('order by order_kind,food_name');
-      ParamByName('order_date').Value:=order_date;
-      ParamByName('gong_hao').Value:=UniMainModule.global_gonghao;
-      ParamByName('order_cancel').Value:='/';
-      Open;
-      First;
-      if RecordCount>0 then
-      begin
-        for i := 0 to RecordCount-1 do
-        begin
-          order_kind:=FieldByName('order_kind').AsString;
-          food_name:=FieldByName('food_name').AsString;
-          UniTreeView3.Items.Add(nil,order_kind+':'+food_name);
-          Next;
-        end;
-      end;
-    end;
-  end;
-end;
-
 procedure TMainForm.UniDateTimePicker3Change(Sender: TObject);
 var
   input_date:string;
@@ -547,6 +551,23 @@ var
 begin
   input_date:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker3.DateTime);
   UniMemo1.Lines.Clear;
+  //
+  with UniMainModule.exec_query do  // 列出早餐人数
+  begin
+    Close;
+    SQL.Clear;
+    SQL.Add('select user_name from order_table');
+    SQL.Add('where order_date=:order_date');
+    SQL.Add('and order_kind=:order_kind');
+    SQL.Add('and order_cancel=:order_cancel');
+    SQL.Add('group by user_name');
+    ParamByName('order_date').Value:=input_date;
+    ParamByName('order_kind').Value:='早餐';
+    ParamByName('order_cancel').Value:='/';
+    Open;
+    UniMemo1.Lines.Add(input_date+' 订餐信息如下：');
+    UniMemo1.Lines.Add('早餐数据：订餐人数为'+inttostr(RecordCount)+'人');
+  end;
   //
   with UniMainModule.exec_query do  // 列出早餐数据
   begin
@@ -564,8 +585,7 @@ begin
     First;
     if RecordCount>0 then
     begin
-      UniMemo1.Lines.Add(input_date+' 订餐信息如下：');
-      UniMemo1.Lines.Add('早餐数据：');
+
       for i := 0 to RecordCount-1 do
       begin
         display_str:=Fields.FieldByName('food_name').AsString+' = '+Fields.FieldByName('food_number').AsString;
@@ -573,6 +593,22 @@ begin
         Next;
       end;
     end;
+  end;
+  //
+  with UniMainModule.exec_query do  // 列出午餐人数
+  begin
+    Close;
+    SQL.Clear;
+    SQL.Add('select user_name from order_table');
+    SQL.Add('where order_date=:order_date');
+    SQL.Add('and order_kind=:order_kind');
+    SQL.Add('and order_cancel=:order_cancel');
+    SQL.Add('group by user_name');
+    ParamByName('order_date').Value:=input_date;
+    ParamByName('order_kind').Value:='午餐';
+    ParamByName('order_cancel').Value:='/';
+    Open;
+    UniMemo1.Lines.Add('午餐数据：订餐人数为'+inttostr(RecordCount)+'人');
   end;
   //
   with UniMainModule.exec_query do  // 列出午餐数据
@@ -591,7 +627,6 @@ begin
     First;
     if RecordCount>0 then
     begin
-      UniMemo1.Lines.Add('午餐数据：');
       for i := 0 to RecordCount-1 do
       begin
         display_str:=Fields.FieldByName('food_name').AsString+' = '+Fields.FieldByName('food_number').AsString;
@@ -599,6 +634,22 @@ begin
         Next;
       end;
     end;
+  end;
+  //
+  with UniMainModule.exec_query do  // 列出晚餐人数
+  begin
+    Close;
+    SQL.Clear;
+    SQL.Add('select user_name from order_table');
+    SQL.Add('where order_date=:order_date');
+    SQL.Add('and order_kind=:order_kind');
+    SQL.Add('and order_cancel=:order_cancel');
+    SQL.Add('group by user_name');
+    ParamByName('order_date').Value:=input_date;
+    ParamByName('order_kind').Value:='晚餐';
+    ParamByName('order_cancel').Value:='/';
+    Open;
+    UniMemo1.Lines.Add('晚餐数据：订餐人数为'+inttostr(RecordCount)+'人');
   end;
   //
   with UniMainModule.exec_query do  // 列出晚餐数据
@@ -628,81 +679,8 @@ begin
   end;
 end;
 
-procedure TMainForm.UniButton5Click(Sender: TObject);  // 单退
-var
-  add_str:string;
-begin
-  add_str:=SelectedNode2.Text;
-  UniTreeView4.Items.Add(nil,add_str);
-  UniTreeView3.Items.Delete(SelectedNode2);
-end;
-
-procedure TMainForm.UniButton6Click(Sender: TObject);  // 全退
-var
-  add_str:string;
-  i:integer;
-begin
-  UniTreeView4.Items.Clear;
-  //
-  for i := 0 to UniTreeView3.Items.Count-1 do
-  begin
-    add_str:=UniTreeView3.Items.Item[i].Text;
-    UniTreeView4.Items.Add(nil,add_str);
-  end;
-  //
-  UniTreeView3.Items.Clear;
-end;
-
-procedure TMainForm.UniButton7Click(Sender: TObject);  // 删除
-var
-  delete_str,order_kind,food_name:string;
-  i:integer;
-begin
-  for i := 0 to UniTreeView4.Items.Count-1 do
-    begin
-      delete_str:=UniTreeView4.Items.Item[i].Text;
-      if (pos(':',delete_str)>0) then
-      begin
-        order_kind:=copy(delete_str,1,pos(':',delete_str)-1);  // 获取delete_str前半部分，分隔符为':'
-        food_name:=copy(delete_str,pos(':',delete_str)+1,length(delete_str));  // 获取add_str后半部分，分隔符为':'
-        //ShowMessageN(order_kind+','+food_name);
-        try
-          with MainModule.UniMainModule.exec_query do
-          begin
-            Close;
-            SQL.Clear;
-            SQL.Add('update order_table');
-            SQL.Add('set order_cancel=:order_cancel');
-            SQL.Add('where order_date=:order_date');
-            SQL.Add('and order_kind=:order_kind');
-            SQL.Add('and food_name=:food_name');
-            SQL.Add('and gong_hao=:gong_hao');
-            ParamByName('order_cancel').Value:=FormatDateTime('yyyyMMddhhmmss',now());
-            ParamByName('order_date').Value:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker2.DateTime);
-            ParamByName('order_kind').Value:=order_kind;
-            ParamByName('food_name').Value:=food_name;
-            ParamByName('gong_hao').Value:=UniMainModule.global_gonghao;
-            Execsql;
-            ShowMessageN('退餐处理成功');
-          end;
-        except
-          ShowMessageN('退餐处理过程中出现错误，请联系管理员');
-          Exit;
-        end;
-      end
-      else begin
-        ShowMessageN('未找到字符分隔符');
-      end;
-    end;
-    UniTreeView4.Items.Clear;
-end;
-
-procedure TMainForm.UniTreeView3Change(Sender: TObject; Node: TUniTreeNode);
-begin
-  SelectedNode2:=Node;
-end;
 //
-// 退餐模块结束 ----------------------------------------------------------------
+// 查询模块结束 ----------------------------------------------------------------
 
 initialization
   RegisterAppFormClass(TMainForm);

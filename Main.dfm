@@ -16,12 +16,12 @@ object MainForm: TMainForm
     Width = 852
     Height = 411
     Hint = ''
-    ActivePage = UniTabSheet4
+    ActivePage = UniTabSheet1
     Align = alClient
     TabOrder = 0
     object UniTabSheet1: TUniTabSheet
       Hint = ''
-      Caption = #35746#39184
+      Caption = #35746#39184'/'#36864#39184
       OnBeforeActivate = UniTabSheet1BeforeActivate
       object UniGroupBox2: TUniGroupBox
         Left = 10
@@ -29,7 +29,7 @@ object MainForm: TMainForm
         Width = 340
         Height = 360
         Hint = ''
-        Caption = #23558#33756#21333#20449#24687#20174#24038#26639#31227#33267#21491#26639#65292#28857#20445#23384#21363#23436#25104#35746#39184#24037#20316
+        Caption = #35843#25972#33756#21333#33267#21491#20391#26639#20869#65292#28857#20445#23384#21363#23436#25104#35746#39184#24037#20316
         TabOrder = 0
         object UniDateTimePicker1: TUniDateTimePicker
           Left = 10
@@ -108,78 +108,26 @@ object MainForm: TMainForm
     end
     object UniTabSheet2: TUniTabSheet
       Hint = ''
-      Caption = #36864#39184
+      Caption = #26597#35810#35746#39184#35760#24405
       OnBeforeActivate = UniTabSheet2BeforeActivate
-      object UniGroupBox3: TUniGroupBox
-        Left = 10
+      object UniDateTimePicker2: TUniDateTimePicker
+        Left = 20
         Top = 10
-        Width = 340
-        Height = 360
+        Width = 200
         Hint = ''
-        Caption = #23558#33756#21333#20449#24687#20174#24038#26639#31227#33267#21491#26639#65292#28857#21024#38500#21363#23436#25104#36864#39184#24037#20316
+        DateTime = 43644.000000000000000000
+        DateFormat = 'yyyy-MM-dd'
+        TimeFormat = 'HH:mm:ss'
         TabOrder = 0
-        object UniDateTimePicker2: TUniDateTimePicker
-          Left = 10
-          Top = 24
-          Width = 120
-          Hint = ''
-          DateTime = 43625.000000000000000000
-          DateFormat = 'yyyy-MM-dd'
-          TimeFormat = 'HH:mm:ss'
-          TabOrder = 1
-          OnChange = UniDateTimePicker2Change
-        end
-        object UniTreeView3: TUniTreeView
-          Left = 10
-          Top = 52
-          Width = 120
-          Height = 290
-          Hint = ''
-          Items.FontData = {0100000000}
-          TabOrder = 2
-          Color = clWindow
-          OnChange = UniTreeView3Change
-        end
-        object UniTreeView4: TUniTreeView
-          Left = 190
-          Top = 52
-          Width = 120
-          Height = 290
-          Hint = ''
-          Items.FontData = {0100000000}
-          TabOrder = 3
-          Color = clWindow
-        end
-        object UniButton5: TUniButton
-          Left = 145
-          Top = 111
-          Width = 30
-          Height = 25
-          Hint = ''
-          Caption = '>'
-          TabOrder = 4
-          OnClick = UniButton5Click
-        end
-        object UniButton6: TUniButton
-          Left = 145
-          Top = 224
-          Width = 30
-          Height = 25
-          Hint = ''
-          Caption = '>>'
-          TabOrder = 5
-          OnClick = UniButton6Click
-        end
-        object UniButton7: TUniButton
-          Left = 190
-          Top = 21
-          Width = 120
-          Height = 25
-          Hint = ''
-          Caption = #21024#38500#35746#39184#20449#24687
-          TabOrder = 6
-          OnClick = UniButton7Click
-        end
+        OnChange = UniDateTimePicker2Change
+      end
+      object UniMemo2: TUniMemo
+        Left = 20
+        Top = 40
+        Width = 200
+        Height = 330
+        Hint = ''
+        TabOrder = 1
       end
     end
     object UniTabSheet3: TUniTabSheet
@@ -273,10 +221,7 @@ object MainForm: TMainForm
     object UniTabSheet4: TUniTabSheet
       Hint = ''
       Caption = #35746#39184#32479#35745
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 852
-      ExplicitHeight = 411
+      OnBeforeActivate = UniTabSheet4BeforeActivate
       object UniDateTimePicker3: TUniDateTimePicker
         Left = 20
         Top = 10
