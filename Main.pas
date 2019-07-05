@@ -107,9 +107,41 @@ end;
 
 procedure TMainForm.UniTabSheet2BeforeActivate(Sender: TObject;  // 查询页面初始化
   var AllowActivate: Boolean);
+var
+  input_date:string;
+  order_kind,food_name:string;
+  i:integer;
 begin
   UniDateTimePicker2.DateTime:=now();
   UniMemo2.Clear;
+  input_date:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker2.DateTime);
+  //
+  with MainModule.UniMainModule.exec_query do  // 在MEMO中列出所选日期的订餐记录
+  begin
+    Close;
+    SQL.Clear;
+    SQL.Add('select order_kind,food_name from order_table');
+    SQL.Add('where order_date=:order_date');
+    SQL.Add('and gong_hao=:gong_hao');
+    SQL.Add('and order_cancel=:order_cancel');
+    SQL.Add('order by order_kind,food_name');
+    ParamByName('order_date').Value:=input_date;
+    ParamByName('gong_hao').Value:=UniMainModule.global_gonghao;
+    ParamByName('order_cancel').Value:='/';
+    Open;
+    First;
+    if RecordCount>0 then
+    begin
+      for i := 0 to RecordCount-1 do
+      begin
+        order_kind:=FieldByName('order_kind').AsString;
+        food_name:=FieldByName('food_name').AsString;
+        UniMemo2.Lines.Add(order_kind+':'+food_name);
+        Next;
+      end;
+    end;
+  end;
+
 end;
 
 procedure TMainForm.UniTabSheet3BeforeActivate(Sender: TObject;  // 修改密码页面初始化
@@ -373,9 +405,10 @@ var
   i:integer;
   order_kind,food_name:string;
 begin
+  UniMemo2.Lines.Clear;
   input_date:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker2.DateTime);
   //
-  with MainModule.UniMainModule.exec_query do  // 在右侧栏目添加已订餐信息
+  with MainModule.UniMainModule.exec_query do  // 在MEMO中添加已订餐信息
   begin
     Close;
     SQL.Clear;

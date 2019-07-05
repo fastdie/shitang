@@ -1,0 +1,30 @@
+shitang.exe: 00002564: 09:27:58 []:>--------------------------------------------------------------<
+shitang.exe: 00002564: 09:27:58 [TUniServerModule]:Server First Init.
+shitang.exe: 00002564: 09:27:58 [TUniServerModule]:Starting HTTP Server on Port: 8066...
+shitang.exe: 00002564: 09:27:58 [TUniServerModule]:HTTP Server Started on Port: 8066
+shitang.exe: 00002564: 09:29:13 [TUniServerModule]:Shutting Down Server.
+shitang.exe: 00002564: 09:29:13 [TUniServerModule]:Stopping HTTP Server.
+shitang.exe: 00002564: 09:29:13 [TUniServerModule]:HTTP Server Stopped.
+shitang.exe: 00002564: 09:29:13 [TUniGUISessionManager]:Terminating Session manager.
+shitang.exe: 00002564: 09:29:13 [TUniGUISessionManager]:Stopping Cache Eraser...
+shitang.exe: 00002564: 09:29:13 [TUniGUISessionManager]:Cache Eraser Stopped.
+shitang.exe: 00002564: 09:29:13 [TUniGUISessionManager]:Destroying Worker Threads.
+shitang.exe: 00002564: 09:29:13 [TUniGUISessionManager]:Session manager terminated.
+shitang.exe: 00002564: 09:29:13 [TUniServerModule]:Server Shutdown Completed.
+shitang.exe: 00002564: 09:29:13 []:<-------------------------------------------------------------->
+shitang.exe: 00002564: 09:29:13 [Terminated]:Exit Code: 0
+shitang.exe: 000013E0: 09:29:41 []:>--------------------------------------------------------------<
+shitang.exe: 000013E0: 09:29:41 [TUniServerModule]:Server First Init.
+shitang.exe: 000013E0: 09:29:41 [TUniServerModule]:Starting HTTP Server on Port: 8066...
+shitang.exe: 000013E0: 09:29:41 [TUniServerModule]:HTTP Server Started on Port: 8066
+shitang.exe: 000013E0: 09:29:46 [TUniServerModule]:Shutting Down Server.
+shitang.exe: 000013E0: 09:29:46 [TUniServerModule]:Stopping HTTP Server.
+shitang.exe: 000013E0: 09:29:46 [TUniServerModule]:HTTP Server Stopped.
+shitang.exe: 000013E0: 09:29:46 [TUniGUISessionManager]:Terminating Session manager.
+shitang.exe: 000013E0: 09:29:46 [TUniGUISessionManager]:Stopping Cache Eraser...
+shitang.exe: 000013E0: 09:29:46 [TUniGUISessionManager]:Cache Eraser Stopped.
+shitang.exe: 000013E0: 09:29:46 [TUniGUISessionManager]:Destroying Worker Threads.
+shitang.exe: 000013E0: 09:29:46 [TUniGUISessionManager]:Session manager terminated.
+shitang.exe: 000013E0: 09:29:46 [TUniServerModule]:Server Shutdown Completed.
+shitang.exe: 000013E0: 09:29:46 []:<-------------------------------------------------------------->
+shitang.exe: 000013E0: 09:29:46 [Terminated]:Exit Code: 0
