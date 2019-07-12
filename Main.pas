@@ -7,7 +7,7 @@ uses
   Controls, Forms, uniGUITypes, uniGUIAbstractClasses,
   uniGUIClasses, uniGUIRegClasses, uniGUIForm, uniPanel, uniPageControl,
   uniGUIBaseClasses, uniButton, uniLabel, uniEdit, uniGroupBox, uniStatusBar,
-  uniTreeView, uniDateTimePicker, uniTimer, uniMemo;
+  uniTreeView, uniDateTimePicker, uniTimer, uniMemo, uniBasicGrid, uniDBGrid;
 
 type
   TMainForm = class(TUniForm)
@@ -38,6 +38,10 @@ type
     UniMemo1: TUniMemo;
     UniDateTimePicker2: TUniDateTimePicker;
     UniMemo2: TUniMemo;
+    UniTabSheet5: TUniTabSheet;
+    UniDBGrid1: TUniDBGrid;
+    UniButton5: TUniButton;
+    UniDateTimePicker4: TUniDateTimePicker;
     procedure UniFormCreate(Sender: TObject);
     procedure UniButton1Click(Sender: TObject);
     procedure UniTabSheet1BeforeActivate(Sender: TObject;
@@ -58,6 +62,8 @@ type
     procedure UniTabSheet4BeforeActivate(Sender: TObject;
       var AllowActivate: Boolean);
     procedure UniDateTimePicker2Change(Sender: TObject);
+    procedure UniTabSheet5BeforeActivate(Sender: TObject;
+      var AllowActivate: Boolean);
   private
     { Private declarations }
     SelectedNode1 : TUniTreeNode;
@@ -158,6 +164,12 @@ procedure TMainForm.UniTabSheet4BeforeActivate(Sender: TObject;  // 查询统计页面
 begin
   UniDateTimePicker3.DateTime:=now();
   UniMemo1.Clear;
+end;
+
+procedure TMainForm.UniTabSheet5BeforeActivate(Sender: TObject;
+  var AllowActivate: Boolean);
+begin
+  UniDateTimePicker3.DateTime:=now();
 end;
 
 procedure TMainForm.UniTimer1Timer(Sender: TObject);

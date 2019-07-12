@@ -13,6 +13,8 @@ type
     exec_query: TUniQuery;
     dingcan_query: TUniQuery;
     tuican_query: TUniQuery;
+    fankui_ds: TUniDataSource;
+    fankui_query: TUniQuery;
   private
     { Private declarations }
   public

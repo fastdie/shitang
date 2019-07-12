@@ -16,7 +16,7 @@ object MainForm: TMainForm
     Width = 852
     Height = 411
     Hint = ''
-    ActivePage = UniTabSheet3
+    ActivePage = UniTabSheet5
     Align = alClient
     TabOrder = 0
     object UniTabSheet1: TUniTabSheet
@@ -240,6 +240,54 @@ object MainForm: TMainForm
         Height = 330
         Hint = ''
         TabOrder = 1
+      end
+    end
+    object UniTabSheet5: TUniTabSheet
+      Hint = ''
+      Caption = #26412#21608#24847#35265#21453#39304
+      OnBeforeActivate = UniTabSheet5BeforeActivate
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 852
+      ExplicitHeight = 411
+      object UniDBGrid1: TUniDBGrid
+        Left = 20
+        Top = 40
+        Width = 253
+        Height = 303
+        Hint = ''
+        DataSource = UniMainModule.fankui_ds
+        Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgRowSelect, dgCheckSelect, dgConfirmDelete, dgMultiSelect, dgAutoRefreshRow]
+        ReadOnly = True
+        LoadMask.Message = 'Loading data...'
+        TabOrder = 0
+        Columns = <
+          item
+            FieldName = 'food_name'
+            Title.Alignment = taCenter
+            Title.Caption = #28385#24847#33756#21697
+            Width = 244
+            Alignment = taCenter
+          end>
+      end
+      object UniButton5: TUniButton
+        Left = 20
+        Top = 350
+        Width = 253
+        Height = 25
+        Hint = ''
+        Caption = 'UniButton5'
+        TabOrder = 1
+      end
+      object UniDateTimePicker4: TUniDateTimePicker
+        Left = 20
+        Top = 10
+        Width = 253
+        Hint = ''
+        DateTime = 43658.000000000000000000
+        DateFormat = 'yyyy-MM-dd'
+        TimeFormat = 'HH:mm:ss'
+        TabOrder = 2
       end
     end
   end
