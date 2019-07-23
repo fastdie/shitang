@@ -7,7 +7,8 @@ uses
   Controls, Forms, uniGUITypes, uniGUIAbstractClasses,
   uniGUIClasses, uniGUIRegClasses, uniGUIForm, uniPanel, uniPageControl,
   uniGUIBaseClasses, uniButton, uniLabel, uniEdit, uniGroupBox, uniStatusBar,
-  uniTreeView, uniDateTimePicker, uniTimer, uniMemo, uniBasicGrid, uniDBGrid;
+  uniTreeView, uniDateTimePicker, uniTimer, uniMemo, uniBasicGrid, uniDBGrid,
+  uniMultiItem, uniListBox;
 
 type
   TMainForm = class(TUniForm)
@@ -37,11 +38,12 @@ type
     UniDateTimePicker3: TUniDateTimePicker;
     UniMemo1: TUniMemo;
     UniDateTimePicker2: TUniDateTimePicker;
-    UniMemo2: TUniMemo;
     UniTabSheet5: TUniTabSheet;
     UniDBGrid1: TUniDBGrid;
     UniButton5: TUniButton;
     UniDateTimePicker4: TUniDateTimePicker;
+    UniButton6: TUniButton;
+    UniListBox1: TUniListBox;
     procedure UniFormCreate(Sender: TObject);
     procedure UniButton1Click(Sender: TObject);
     procedure UniTabSheet1BeforeActivate(Sender: TObject;
@@ -64,6 +66,7 @@ type
     procedure UniDateTimePicker2Change(Sender: TObject);
     procedure UniTabSheet5BeforeActivate(Sender: TObject;
       var AllowActivate: Boolean);
+    procedure UniButton6Click(Sender: TObject);
   private
     { Private declarations }
     SelectedNode1 : TUniTreeNode;
@@ -90,6 +93,7 @@ end;
 procedure TMainForm.UniFormCreate(Sender: TObject);  // 根据用户权限决定显示页面范围
 begin
   UniDateTimePicker1.DateTime:=now();
+  UniDateTimePicker2.DateTime:=now();
   if UniMainModule.global_authority='食堂管理员' then
   begin
     UniTabSheet1.TabVisible:=false;
@@ -118,9 +122,8 @@ var
   order_kind,food_name:string;
   i:integer;
 begin
-  UniDateTimePicker2.DateTime:=now();
-  UniMemo2.Clear;
   input_date:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker2.DateTime);
+  UniListBox1.Items.Clear;
   //
   with MainModule.UniMainModule.exec_query do  // 在MEMO中列出所选日期的订餐记录
   begin
@@ -142,12 +145,11 @@ begin
       begin
         order_kind:=FieldByName('order_kind').AsString;
         food_name:=FieldByName('food_name').AsString;
-        UniMemo2.Lines.Add(order_kind+':'+food_name);
+        UniListBox1.Items.Add(order_kind+':'+food_name);
         Next;
       end;
     end;
   end;
-
 end;
 
 procedure TMainForm.UniTabSheet3BeforeActivate(Sender: TObject;  // 修改密码页面初始化
@@ -413,14 +415,15 @@ end;
 
 procedure TMainForm.UniDateTimePicker2Change(Sender: TObject);  // 查询个人订餐数据
 var
+  //mytreenode1,mytreenode2,mytreenode3:TUniTreeNode;
   input_date:string;
   i:integer;
   order_kind,food_name:string;
 begin
-  UniMemo2.Lines.Clear;
+  UniListBox1.Items.Clear;
   input_date:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker2.DateTime);
   //
-  with MainModule.UniMainModule.exec_query do  // 在MEMO中添加已订餐信息
+  with MainModule.UniMainModule.exec_query do  // 添加已订餐信息
   begin
     Close;
     SQL.Clear;
@@ -440,7 +443,7 @@ begin
       begin
         order_kind:=FieldByName('order_kind').AsString;
         food_name:=FieldByName('food_name').AsString;
-        UniMemo2.Lines.Add(order_kind+':'+food_name);
+        UniListBox1.Items.Add(order_kind+':'+food_name);
         Next;
       end;
     end;
@@ -579,10 +582,17 @@ begin
   end;
 end;
 
+procedure TMainForm.UniButton6Click(Sender: TObject);  // 退餐
+begin
+  //
+end;
+
 procedure TMainForm.UniTreeView1Change(Sender: TObject; Node: TUniTreeNode);
 begin
   SelectedNode1:=Node;
 end;
+
+
 //
 // 订餐模块结束 ----------------------------------------------------------------
 

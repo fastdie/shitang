@@ -1,7 +1,7 @@
 object MainForm: TMainForm
   Left = 0
   Top = 0
-  ClientHeight = 411
+  ClientHeight = 761
   ClientWidth = 852
   Caption = #38054#24030#28023#20851#39135#22530#35746#39184#31649#29702#31995#32479
   WindowState = wsMaximized
@@ -14,14 +14,14 @@ object MainForm: TMainForm
     Left = 0
     Top = 0
     Width = 852
-    Height = 411
+    Height = 761
     Hint = ''
-    ActivePage = UniTabSheet5
+    ActivePage = UniTabSheet3
     Align = alClient
     TabOrder = 0
     object UniTabSheet1: TUniTabSheet
       Hint = ''
-      Caption = #35746#39184'/'#36864#39184
+      Caption = #26085#24120#35746#39184
       OnBeforeActivate = UniTabSheet1BeforeActivate
       object UniGroupBox2: TUniGroupBox
         Left = 10
@@ -108,12 +108,12 @@ object MainForm: TMainForm
     end
     object UniTabSheet2: TUniTabSheet
       Hint = ''
-      Caption = #26597#35810#35746#39184#35760#24405
+      Caption = #26597#35810' / '#36864#39184
       OnBeforeActivate = UniTabSheet2BeforeActivate
       object UniDateTimePicker2: TUniDateTimePicker
         Left = 20
         Top = 10
-        Width = 200
+        Width = 300
         Hint = ''
         DateTime = 43644.000000000000000000
         DateFormat = 'yyyy-MM-dd'
@@ -121,13 +121,25 @@ object MainForm: TMainForm
         TabOrder = 0
         OnChange = UniDateTimePicker2Change
       end
-      object UniMemo2: TUniMemo
+      object UniButton6: TUniButton
         Left = 20
-        Top = 40
-        Width = 200
-        Height = 330
+        Top = 672
+        Width = 300
+        Height = 25
         Hint = ''
+        Caption = #36864#39184
         TabOrder = 1
+        OnClick = UniButton6Click
+      end
+      object UniListBox1: TUniListBox
+        Left = 20
+        Top = 62
+        Width = 300
+        Height = 579
+        Hint = ''
+        TabOrder = 2
+        ParentFont = False
+        Font.Height = -16
       end
     end
     object UniTabSheet3: TUniTabSheet
@@ -246,10 +258,6 @@ object MainForm: TMainForm
       Hint = ''
       Caption = #26412#21608#24847#35265#21453#39304
       OnBeforeActivate = UniTabSheet5BeforeActivate
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 852
-      ExplicitHeight = 411
       object UniDBGrid1: TUniDBGrid
         Left = 20
         Top = 40
