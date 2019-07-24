@@ -16,7 +16,7 @@ object MainForm: TMainForm
     Width = 852
     Height = 761
     Hint = ''
-    ActivePage = UniTabSheet3
+    ActivePage = UniTabSheet2
     Align = alClient
     TabOrder = 0
     object UniTabSheet1: TUniTabSheet
@@ -26,8 +26,8 @@ object MainForm: TMainForm
       object UniGroupBox2: TUniGroupBox
         Left = 10
         Top = 10
-        Width = 340
-        Height = 360
+        Width = 495
+        Height = 631
         Hint = ''
         Caption = #35843#25972#33756#21333#33267#21491#20391#26639#20869#65292#28857#20445#23384#21363#23436#25104#35746#39184#24037#20316
         TabOrder = 0
@@ -45,64 +45,15 @@ object MainForm: TMainForm
         object UniTreeView1: TUniTreeView
           Left = 10
           Top = 52
-          Width = 120
-          Height = 290
+          Width = 191
+          Height = 429
           Hint = ''
           Items.FontData = {0100000000}
           AutoExpand = True
           TabOrder = 2
           Color = clWindow
           OnChange = UniTreeView1Change
-        end
-        object UniTreeView2: TUniTreeView
-          Left = 190
-          Top = 52
-          Width = 120
-          Height = 290
-          Hint = ''
-          Items.FontData = {0100000000}
-          TabOrder = 3
-          Color = clWindow
-        end
-        object UniButton2: TUniButton
-          Left = 145
-          Top = 111
-          Width = 30
-          Height = 25
-          Hint = ''
-          Caption = '>'
-          TabOrder = 4
-          OnClick = UniButton2Click
-        end
-        object UniButton3: TUniButton
-          Left = 145
-          Top = 224
-          Width = 30
-          Height = 25
-          Hint = ''
-          Caption = '>>'
-          TabOrder = 5
-          OnClick = UniButton3Click
-        end
-        object UniButton4: TUniButton
-          Left = 190
-          Top = 21
-          Width = 120
-          Height = 25
-          Hint = ''
-          Caption = #20445#23384#35746#39184#20449#24687
-          TabOrder = 6
-          OnClick = UniButton4Click
-        end
-        object UniButton9: TUniButton
-          Left = 145
-          Top = 167
-          Width = 30
-          Height = 25
-          Hint = ''
-          Caption = '<'
-          TabOrder = 7
-          OnClick = UniButton9Click
+          OnDblClick = UniTreeView1DblClick
         end
       end
     end
@@ -123,11 +74,11 @@ object MainForm: TMainForm
       end
       object UniButton6: TUniButton
         Left = 20
-        Top = 672
+        Top = 664
         Width = 300
         Height = 25
         Hint = ''
-        Caption = #36864#39184
+        Caption = #20840#36873#36864#39184
         TabOrder = 1
         OnClick = UniButton6Click
       end
@@ -135,11 +86,21 @@ object MainForm: TMainForm
         Left = 20
         Top = 62
         Width = 300
-        Height = 579
+        Height = 507
         Hint = ''
         TabOrder = 2
         ParentFont = False
-        Font.Height = -16
+        Font.Height = -21
+      end
+      object UniButton2: TUniButton
+        Left = 20
+        Top = 600
+        Width = 300
+        Height = 25
+        Hint = ''
+        Caption = #36864#39184
+        TabOrder = 3
+        OnClick = UniButton2Click
       end
     end
     object UniTabSheet3: TUniTabSheet
