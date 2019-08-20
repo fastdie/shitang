@@ -16,7 +16,7 @@ object MainForm: TMainForm
     Width = 852
     Height = 761
     Hint = ''
-    ActivePage = UniTabSheet2
+    ActivePage = UniTabSheet1
     Align = alClient
     TabOrder = 0
     object UniTabSheet1: TUniTabSheet
@@ -34,7 +34,7 @@ object MainForm: TMainForm
         object UniDateTimePicker1: TUniDateTimePicker
           Left = 10
           Top = 24
-          Width = 120
+          Width = 240
           Hint = ''
           DateTime = 43625.000000000000000000
           DateFormat = 'yyyy-MM-dd'
@@ -45,7 +45,7 @@ object MainForm: TMainForm
         object UniTreeView1: TUniTreeView
           Left = 10
           Top = 52
-          Width = 191
+          Width = 240
           Height = 429
           Hint = ''
           Items.FontData = {0100000000}

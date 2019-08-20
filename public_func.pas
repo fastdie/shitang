@@ -39,6 +39,16 @@ end;}
 
 function my_leftcopy(s:string):string;
 
+// how to use --------------------------------
+
+// -------------------------------------------
+
+function my_rightcopy(s:string):string;
+
+// how to use --------------------------------
+
+// -------------------------------------------
+
 implementation
 
 function encoding(s:string;key:string):string;
@@ -76,6 +86,18 @@ begin
   begin
     i:=pos(':',s);
     result:=copy(s,1,i-1);
+  end;
+end;
+
+function my_rightcopy(s:string):string;
+var
+  i:integer;
+begin
+  result:='';
+  while pos(':',s)>0 do
+  begin
+    i:=pos(':',s);
+    result:=copy(s,i+1,length(s));
   end;
 end;
 

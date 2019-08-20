@@ -87,7 +87,8 @@ end;
 
 procedure TMainForm.confirmsave(Sender:TComponent;AResult:Integer);
 var
-  order_kind,food_name:string;
+  order_kind,food_name,food_price:string;
+  i:integer;
 begin
   if AResult<>mrYes then
   begin
@@ -111,17 +112,20 @@ begin
   else begin
     try
       order_kind:=SelectedNode1.Parent.Text;
-      food_name:=SelectedNode1.Text;
+      food_name:=my_leftcopy(SelectedNode1.Text);
+      food_price:=my_rightcopy(SelectedNode1.text);
+      i:=pos('元',food_price);
+      food_price:=copy(food_price,1,i-1);
       //
       with UniMainModule.exec_query do
       begin
         Close;
         SQL.Clear;
         SQL.Add('insert into order_table(order_date,order_time,gong_hao,');
-        SQL.Add('user_name,user_department,order_kind,food_name,');
+        SQL.Add('user_name,user_department,order_kind,food_name,food_price');
         SQL.Add('order_cancel,remark)');
         SQL.Add('values(:order_date,:order_time,:gong_hao,');
-        SQL.Add(':user_name,:user_department,:order_kind,:food_name,');
+        SQL.Add(':user_name,:user_department,:order_kind,:food_name,:food_price');
         SQL.Add(':order_cancel,:remark)');
         ParamByName('order_date').Value:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker1.DateTime);
         ParamByName('order_time').Value:=FormatDateTime('yyyyMMddhhmmss',now());
@@ -130,6 +134,7 @@ begin
         ParamByName('user_department').Value:=UniMainModule.global_department;
         ParamByName('order_kind').Value:=order_kind;
         ParamByName('food_name').Value:=food_name;
+        ParamByName('food_price').Value:=strtofloat(food_price);
         ParamByName('order_cancel').Value:='/';
         ParamByName('remark').Value:='web';
         Execsql;
@@ -374,7 +379,7 @@ begin
       begin
         Close;
         SQL.Clear;
-        SQL.Add('select food_name from menulist_table');
+        SQL.Add('select food_name,food_price from menulist_table');
         SQL.Add('where order_date=:order_date');
         SQL.Add('and order_kind=:order_kind');
         SQL.Add('order by food_name');
@@ -385,7 +390,7 @@ begin
         begin
           for i := 0 to RecordCount-1 do
           begin
-            UniTreeView1.Items.AddChild(mytreenode1,FieldByName('food_name').AsString);
+            UniTreeView1.Items.AddChild(mytreenode1,FieldByName('food_name').AsString + ':' + FieldByName('food_price').AsString + '元');
             Next;
           end;
         end;
@@ -395,7 +400,7 @@ begin
       begin
         Close;
         SQL.Clear;
-        SQL.Add('select food_name from menulist_table');
+        SQL.Add('select food_name,food_price from menulist_table');
         SQL.Add('where order_date=:order_date');
         SQL.Add('and order_kind=:order_kind');
         SQL.Add('order by food_name');
@@ -406,7 +411,7 @@ begin
         begin
           for i := 0 to RecordCount-1 do
           begin
-            UniTreeView1.Items.AddChild(mytreenode2,FieldByName('food_name').AsString);
+            UniTreeView1.Items.AddChild(mytreenode2,FieldByName('food_name').AsString + ':' + FieldByName('food_price').AsString + '元');
             Next;
           end;
         end;
@@ -416,7 +421,7 @@ begin
       begin
         Close;
         SQL.Clear;
-        SQL.Add('select food_name from menulist_table');
+        SQL.Add('select food_name,food_price from menulist_table');
         SQL.Add('where order_date=:order_date');
         SQL.Add('and order_kind=:order_kind');
         SQL.Add('order by food_name');
@@ -427,7 +432,7 @@ begin
         begin
           for i := 0 to RecordCount-1 do
           begin
-            UniTreeView1.Items.AddChild(mytreenode3,FieldByName('food_name').AsString);
+            UniTreeView1.Items.AddChild(mytreenode3,FieldByName('food_name').AsString + ':' + FieldByName('food_price').AsString + '元');
             Next;
           end;
         end;
@@ -581,6 +586,7 @@ end;
 procedure TMainForm.UniTreeView1DblClick(Sender: TObject);
 var
   show_str:string;
+  food_name,food_price:string;
 begin
   if (SelectedNode1.Parent = nil) then  // 选择了根节点
   begin
@@ -588,7 +594,7 @@ begin
   end
   else begin
     show_str:='您当前选择的是"'+SelectedNode1.Text+'",是否确认订餐？';
-    MessageDlg(show_str,mtConfirmation,[mbYes,mbNo],confirmsave);
+    MessageDlg(show_str,mtconfirmation,[mbYes,mbNo],confirmsave);
   end;
 end;
 
