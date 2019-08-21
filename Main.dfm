@@ -16,7 +16,7 @@ object MainForm: TMainForm
     Width = 852
     Height = 761
     Hint = ''
-    ActivePage = UniTabSheet1
+    ActivePage = UniTabSheet3
     Align = alClient
     TabOrder = 0
     object UniTabSheet1: TUniTabSheet
@@ -26,15 +26,15 @@ object MainForm: TMainForm
       object UniGroupBox2: TUniGroupBox
         Left = 10
         Top = 10
-        Width = 495
+        Width = 330
         Height = 631
         Hint = ''
-        Caption = #35843#25972#33756#21333#33267#21491#20391#26639#20869#65292#28857#20445#23384#21363#23436#25104#35746#39184#24037#20316
+        Caption = #28857#20987#33756#21697#21517#65292#25353#25552#31034#30830#35748#21363#21487#23436#25104#35746#39184#24037#20316
         TabOrder = 0
         object UniDateTimePicker1: TUniDateTimePicker
           Left = 10
           Top = 24
-          Width = 240
+          Width = 300
           Hint = ''
           DateTime = 43625.000000000000000000
           DateFormat = 'yyyy-MM-dd'
@@ -45,14 +45,15 @@ object MainForm: TMainForm
         object UniTreeView1: TUniTreeView
           Left = 10
           Top = 52
-          Width = 240
-          Height = 429
+          Width = 300
+          Height = 440
           Hint = ''
           Items.FontData = {0100000000}
           AutoExpand = True
           TabOrder = 2
           Color = clWindow
           OnChange = UniTreeView1Change
+          OnClick = UniTreeView1Click
           OnDblClick = UniTreeView1DblClick
         end
       end
@@ -63,7 +64,7 @@ object MainForm: TMainForm
       OnBeforeActivate = UniTabSheet2BeforeActivate
       object UniDateTimePicker2: TUniDateTimePicker
         Left = 20
-        Top = 10
+        Top = 20
         Width = 300
         Hint = ''
         DateTime = 43644.000000000000000000
@@ -74,7 +75,7 @@ object MainForm: TMainForm
       end
       object UniButton6: TUniButton
         Left = 20
-        Top = 664
+        Top = 520
         Width = 300
         Height = 25
         Hint = ''
@@ -84,9 +85,9 @@ object MainForm: TMainForm
       end
       object UniListBox1: TUniListBox
         Left = 20
-        Top = 62
+        Top = 60
         Width = 300
-        Height = 507
+        Height = 400
         Hint = ''
         TabOrder = 2
         ParentFont = False
@@ -94,7 +95,7 @@ object MainForm: TMainForm
       end
       object UniButton2: TUniButton
         Left = 20
-        Top = 600
+        Top = 480
         Width = 300
         Height = 25
         Hint = ''

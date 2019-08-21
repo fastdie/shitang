@@ -61,6 +61,7 @@ type
     procedure UniButton6Click(Sender: TObject);
     procedure UniTreeView1DblClick(Sender: TObject);
     procedure UniButton2Click(Sender: TObject);
+    procedure UniTreeView1Click(Sender: TObject);
   private
     { Private declarations }
     SelectedNode1 : TUniTreeNode;
@@ -112,20 +113,22 @@ begin
   else begin
     try
       order_kind:=SelectedNode1.Parent.Text;
-      food_name:=my_leftcopy(SelectedNode1.Text);
-      food_price:=my_rightcopy(SelectedNode1.text);
+      i:=pos(':',SelectedNode1.Text);
+      food_name:=copy(SelectedNode1.Text,1,i-1);
+      food_price:=copy(SelectedNode1.text,i+1,length(SelectedNode1.Text));
       i:=pos('Ôª',food_price);
       food_price:=copy(food_price,1,i-1);
       //
+
       with UniMainModule.exec_query do
       begin
         Close;
         SQL.Clear;
         SQL.Add('insert into order_table(order_date,order_time,gong_hao,');
-        SQL.Add('user_name,user_department,order_kind,food_name,food_price');
+        SQL.Add('user_name,user_department,order_kind,food_name,food_price,');
         SQL.Add('order_cancel,remark)');
         SQL.Add('values(:order_date,:order_time,:gong_hao,');
-        SQL.Add(':user_name,:user_department,:order_kind,:food_name,:food_price');
+        SQL.Add(':user_name,:user_department,:order_kind,:food_name,:food_price,');
         SQL.Add(':order_cancel,:remark)');
         ParamByName('order_date').Value:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker1.DateTime);
         ParamByName('order_time').Value:=FormatDateTime('yyyyMMddhhmmss',now());
@@ -138,10 +141,10 @@ begin
         ParamByName('order_cancel').Value:='/';
         ParamByName('remark').Value:='web';
         Execsql;
-        ShowMessageN('¶©²Í³É¹¦');
+        //ShowMessageN('¶©²Í³É¹¦');
       end;
     except
-      ShowMessageN('¶©²ÍÊ§°Ü£¬ÇëÁªÏµ¹ÜÀíÔ±');
+      ShowMessageN('¶©²ÍÊ§°Ü£¬ÇëÁªÏµ¹ÜÀíÔ±,'+food_name+','+food_price);
     end;
   end;
 end;
@@ -161,6 +164,7 @@ begin
   end
   else begin
     UniTabSheet4.TabVisible:=false;
+    UniTabSheet5.TabVisible:=false;
   end;
   //
 end;
@@ -174,41 +178,12 @@ begin
   // Ìí¼Ó²Ëµ¥ĞÅÏ¢
 end;
 
-procedure TMainForm.UniTabSheet2BeforeActivate(Sender: TObject;  // ²éÑ¯Ò³Ãæ³õÊ¼»¯
+procedure TMainForm.UniTabSheet2BeforeActivate(Sender: TObject;  // ²éÑ¯ÍË²ÍÒ³Ãæ³õÊ¼»¯
   var AllowActivate: Boolean);
-var
-  input_date:string;
-  order_kind,food_name:string;
-  i:integer;
+
 begin
-  input_date:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker2.DateTime);
+  UniDateTimePicker2.DateTime:=now();
   UniListBox1.Items.Clear;
-  //
-  with MainModule.UniMainModule.exec_query do  // ÔÚMEMOÖĞÁĞ³öËùÑ¡ÈÕÆÚµÄ¶©²Í¼ÇÂ¼
-  begin
-    Close;
-    SQL.Clear;
-    SQL.Add('select order_kind,food_name from order_table');
-    SQL.Add('where order_date=:order_date');
-    SQL.Add('and gong_hao=:gong_hao');
-    SQL.Add('and order_cancel=:order_cancel');
-    SQL.Add('order by order_kind,food_name');
-    ParamByName('order_date').Value:=input_date;
-    ParamByName('gong_hao').Value:=UniMainModule.global_gonghao;
-    ParamByName('order_cancel').Value:='/';
-    Open;
-    First;
-    if RecordCount>0 then
-    begin
-      for i := 0 to RecordCount-1 do
-      begin
-        order_kind:=FieldByName('order_kind').AsString;
-        food_name:=FieldByName('food_name').AsString;
-        UniListBox1.Items.Add(order_kind+':'+food_name);
-        Next;
-      end;
-    end;
-  end;
 end;
 
 procedure TMainForm.UniTabSheet3BeforeActivate(Sender: TObject;  // ĞŞ¸ÄÃÜÂëÒ³Ãæ³õÊ¼»¯
@@ -331,8 +306,6 @@ begin
   end;
 end;
 
-
-
 procedure TMainForm.UniButton8Click(Sender: TObject);
 begin
   ShowMessage('ÓÃ»§Ãû£º'+UniMainModule.global_username+';¹¤ºÅ£º'+UniMainModule.global_gonghao+';²¿ÃÅ£º'+UniMainModule.global_department+';');
@@ -355,7 +328,7 @@ begin
   date_str:=FormatDateTime('yyyyMMdd',server_time);
   time_str:=FormatDateTime('hhmmss',server_time);
   //
-  if (strtoint(time_str)>=230000) and (strtoint(time_str)<=235959) then  // ÍíÆßµãÒÔºó
+  if (strtoint(time_str)>=190000) and (strtoint(time_str)<=235959) then  // ÍíÆßµãÒÔºó
   begin
     // ÌáÊ¾²»ÔÊĞí¶©²Í
     ShowMessageN('ÍíÆßµãÒÔºó²»ÔÊĞí¶©²Í£¬ÇëÁÂ½â');
@@ -449,8 +422,10 @@ procedure TMainForm.UniDateTimePicker2Change(Sender: TObject);  // ²éÑ¯¸öÈË¶©²ÍÊ
 var
   input_date:string;
   i:integer;
+  food_price,total_price:single;
   order_kind,food_name:string;
 begin
+  total_price:=0;
   UniListBox1.Items.Clear;
   input_date:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker2.DateTime);
   //
@@ -458,7 +433,7 @@ begin
   begin
     Close;
     SQL.Clear;
-    SQL.Add('select order_kind,food_name from order_table');
+    SQL.Add('select order_kind,food_name,food_price from order_table');
     SQL.Add('where order_date=:order_date');
     SQL.Add('and gong_hao=:gong_hao');
     SQL.Add('and order_cancel=:order_cancel');
@@ -474,9 +449,35 @@ begin
       begin
         order_kind:=FieldByName('order_kind').AsString;
         food_name:=FieldByName('food_name').AsString;
-        UniListBox1.Items.Add(order_kind+':'+food_name);
+        food_price:=FieldByName('food_price').AsSingle;
+        total_price:=total_price+food_price;
+        UniListBox1.Items.Add(order_kind+':'+food_name+':'+formatfloat('0.00',food_price)+'Ôª');
         Next;
       end;
+      UniListBox1.Items.Add('ÒÔÉÏºÏ¼Æ½ğ¶îÎª:'+formatfloat('0.00',total_price)+'Ôª');
+    end;
+  end;
+  //
+  if strtoint(FormatDateTime('yyyyMMdd',UniDateTimePicker2.DateTime)) <= strtoint(FormatDateTime('yyyyMMdd',now())) then
+  begin
+    // ÈÕÆÚÑ¡ÔñÁËµ±Ìì»òÒÔÍù£¬²»ÔÊĞíÍË²Í
+    if (UniButton2.Enabled=true) then
+    begin
+      UniButton2.Enabled:=false;
+    end;
+    if (UniButton6.Enabled=true) then
+    begin
+      UniButton6.Enabled:=false;
+    end;
+  end
+  else begin
+    if (UniButton2.Enabled=false) then
+    begin
+      UniButton2.Enabled:=true;
+    end;
+    if (UniButton6.Enabled=false) then
+    begin
+      UniButton6.Enabled:=true;
     end;
   end;
 end;
@@ -487,71 +488,81 @@ var
   input_date:string;
   i:integer;
   order_kind,food_name:string;
+  food_price:single;
 begin
   if (UniListBox1.ItemIndex<0) then
   begin
     exit;
   end;
   //
-  del_str:=UniListBox1.Items.Strings[UniListBox1.ItemIndex];
-  if (pos(':',del_str)>0) then
+  input_date:=FormatDateTime('yyyyMMdd',UniDateTimePicker2.DateTime);
+  if (strtoint(input_date)>=190000) and (strtoint(input_date)<=235959) then
   begin
-    order_kind:=copy(del_str,1,pos(':',del_str)-1);
-    food_name:=copy(del_str,pos(':',del_str)+1,length(del_str));
-    try
-      with UniMainModule.exec_query do
+    // ÌáÊ¾³¬¹ıÍË²ÍÊ±¼ä¶Î£¬²»ÔÊĞíÍË²Í
+  end
+  else begin
+    // ·ûºÏÍË²ÍÌõ¼ş£¬ÔÊĞíÍË²Í
+    del_str:=UniListBox1.Items.Strings[UniListBox1.ItemIndex];
+    if (pos(':',del_str)>0) then
+    begin
+      order_kind:=copy(del_str,1,pos(':',del_str)-1);
+      del_str:=copy(del_str,pos(':',del_str)+1,length(del_str));  // ÖØ¸³Öµ²Ù×÷
+      food_name:=copy(del_str,1,pos(':',del_str)-1);
+      //
+      try
+        with UniMainModule.exec_query do
+        begin
+          Close;
+          SQL.Clear;
+          SQL.Add('update order_table');
+          SQL.Add('set order_cancel=:order_cancel');
+          SQL.Add('where gong_hao=:gong_hao');
+          SQL.Add('and order_date=:order_date');
+          SQL.Add('and order_kind=:order_kind');
+          SQL.Add('and food_name=:food_name');
+          ParamByName('order_cancel').Value:=FormatDateTime('yyyyMMddhhmmss',now());
+          ParamByName('gong_hao').Value:=UniMainModule.global_gonghao;
+          ParamByName('order_date').Value:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker2.DateTime);
+          ParamByName('order_kind').Value:=order_kind;
+          ParamByName('food_name').Value:=food_name;
+          Execsql;
+        end;
+      except
+        ShowMessageN('ÍË²Í¹ı³ÌÖĞÅöµ½ÎÊÌâ£¬ÇëÁªÏµ¹ÜÀíÔ±');
+      end;
+      //
+      UniListBox1.Items.Clear;
+      with MainModule.UniMainModule.exec_query do  // Ë¢ĞÂÒÑ¶©²ÍĞÅÏ¢
       begin
         Close;
         SQL.Clear;
-        SQL.Add('update order_table');
-        SQL.Add('set order_cancel=:order_cancel');
-        SQL.Add('where gong_hao=:gong_hao');
-        SQL.Add('and order_date=:order_date');
-        SQL.Add('and order_kind=:order_kind');
-        SQL.Add('and food_name=:food_name');
-        ParamByName('order_cancel').Value:=FormatDateTime('yyyyMMddhhmmss',now());
-        ParamByName('gong_hao').Value:=UniMainModule.global_gonghao;
+        SQL.Add('select order_kind,food_name,food_price from order_table');
+        SQL.Add('where order_date=:order_date');
+        SQL.Add('and gong_hao=:gong_hao');
+        SQL.Add('and order_cancel=:order_cancel');
+        SQL.Add('order by order_kind,food_name');
         ParamByName('order_date').Value:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker2.DateTime);
-        ParamByName('order_kind').Value:=order_kind;
-        ParamByName('food_name').Value:=food_name;
-        Execsql;
-      end;
-    except
-      ShowMessageN('ÍË²Í¹ı³ÌÖĞÅöµ½ÎÊÌâ£¬ÇëÁªÏµ¹ÜÀíÔ±');
-    end;
-  end;
-  //
-  UniListBox1.Items.Clear;
-  input_date:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker2.DateTime);
-  //
-  with MainModule.UniMainModule.exec_query do  // Ìí¼ÓÒÑ¶©²ÍĞÅÏ¢
-  begin
-    Close;
-    SQL.Clear;
-    SQL.Add('select order_kind,food_name from order_table');
-    SQL.Add('where order_date=:order_date');
-    SQL.Add('and gong_hao=:gong_hao');
-    SQL.Add('and order_cancel=:order_cancel');
-    SQL.Add('order by order_kind,food_name');
-    ParamByName('order_date').Value:=input_date;
-    ParamByName('gong_hao').Value:=UniMainModule.global_gonghao;
-    ParamByName('order_cancel').Value:='/';
-    Open;
-    First;
-    if RecordCount>0 then
-    begin
-      for i := 0 to RecordCount-1 do
-      begin
-        order_kind:=FieldByName('order_kind').AsString;
-        food_name:=FieldByName('food_name').AsString;
-        UniListBox1.Items.Add(order_kind+':'+food_name);
-        Next;
+        ParamByName('gong_hao').Value:=UniMainModule.global_gonghao;
+        ParamByName('order_cancel').Value:='/';
+        Open;
+        First;
+        if RecordCount>0 then
+        begin
+          for i := 0 to RecordCount-1 do
+          begin
+            order_kind:=FieldByName('order_kind').AsString;
+            food_name:=FieldByName('food_name').AsString;
+            food_price:=FieldByName('food_price').AsSingle;
+            UniListBox1.Items.Add(order_kind+':'+food_name+':'+Formatfloat('0.00',food_price)+'Ôª');
+            Next;
+          end;
+        end;
       end;
     end;
   end;
 end;
 
-procedure TMainForm.UniButton6Click(Sender: TObject);  // È«Ñ¡ÍË²Í
+procedure TMainForm.UniButton6Click(Sender: TObject);  // È«Ñ¡ÍË²Í ´ıĞŞ¸Ä
 begin
   if (UniListBox1.Items.Count>0) then
   begin
@@ -583,19 +594,24 @@ begin
 end;
 
 
-procedure TMainForm.UniTreeView1DblClick(Sender: TObject);
+procedure TMainForm.UniTreeView1Click(Sender: TObject);
 var
   show_str:string;
-  food_name,food_price:string;
 begin
   if (SelectedNode1.Parent = nil) then  // Ñ¡ÔñÁË¸ù½Úµã
   begin
-    //show_str:='Äúµ±Ç°Ñ¡ÔñµÄÊÇÌí¼ÓËùÓĞ'+SelectedNode1.Text+',ÊÇ·ñÈ·ÈÏ¶©²Í£¿';
+    // do nothing
   end
   else begin
     show_str:='Äúµ±Ç°Ñ¡ÔñµÄÊÇ"'+SelectedNode1.Text+'",ÊÇ·ñÈ·ÈÏ¶©²Í£¿';
     MessageDlg(show_str,mtconfirmation,[mbYes,mbNo],confirmsave);
   end;
+end;
+
+procedure TMainForm.UniTreeView1DblClick(Sender: TObject);
+
+begin
+  //
 end;
 
 //
