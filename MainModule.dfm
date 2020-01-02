@@ -10,7 +10,7 @@ object UniMainModule: TUniMainModule
     Port = 3306
     Database = 'shitang'
     Username = 'fastdie'
-    Server = '111.59.173.10'
+    Server = '192.168.100.102'
     Connected = True
     LoginPrompt = False
     Left = 88
@@ -49,7 +49,6 @@ object UniMainModule: TUniMainModule
       'group by food_name'
       ''
       'order by food_name')
-    Active = True
     Left = 424
     Top = 56
   end

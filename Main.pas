@@ -8,7 +8,7 @@ uses
   uniGUIClasses, uniGUIRegClasses, uniGUIForm, uniPanel, uniPageControl,
   uniGUIBaseClasses, uniButton, uniLabel, uniEdit, uniGroupBox, uniStatusBar,
   uniTreeView, uniDateTimePicker, uniTimer, uniMemo, uniBasicGrid, uniDBGrid,
-  uniMultiItem, uniListBox;
+  uniMultiItem, uniListBox, uniComboBox;
 
 type
   TMainForm = class(TUniForm)
@@ -34,12 +34,12 @@ type
     UniMemo1: TUniMemo;
     UniDateTimePicker2: TUniDateTimePicker;
     UniTabSheet5: TUniTabSheet;
-    UniDBGrid1: TUniDBGrid;
-    UniButton5: TUniButton;
-    UniDateTimePicker4: TUniDateTimePicker;
     UniButton6: TUniButton;
     UniListBox1: TUniListBox;
     UniButton2: TUniButton;
+    UniLabel4: TUniLabel;
+    UniGroupBox3: TUniGroupBox;
+    UniListBox2: TUniListBox;
     procedure UniFormCreate(Sender: TObject);
     procedure UniButton1Click(Sender: TObject);
     procedure UniTabSheet1BeforeActivate(Sender: TObject;
@@ -159,23 +159,68 @@ begin
   UniDateTimePicker2.DateTime:=now();
   if UniMainModule.global_authority='食堂管理员' then
   begin
-    UniTabSheet1.TabVisible:=false;
-    UniTabSheet2.TabVisible:=false;
+    UniTabSheet1.TabVisible:=false;   // 日常订餐功能不可用
+    UniTabSheet2.TabVisible:=false;   // 查询退餐功能不可用
+    //UniTabSheet3.TabVisible:=false; // 修改密码功能
+    //UniTabSheet4.TabVisible:=false; // 订餐统计功能
+    UniTabSheet5.TabVisible:=false;   // 点选物品功能不可用
   end
-  else begin
-    UniTabSheet4.TabVisible:=false;
-    UniTabSheet5.TabVisible:=false;
+  else if (UniMainModule.global_authority='在编人员') or (UniMainModule.global_authority='非编人员') then
+  begin
+    //UniTabSheet1.TabVisible:=false;  // 日常订餐
+    //UniTabSheet2.TabVisible:=false;  // 查询退餐
+    //UniTabSheet3.TabVisible:=false;  // 修改密码
+    UniTabSheet4.TabVisible:=false;  // 订餐统计不可用
+    UniTabSheet5.TabVisible:=false;  // 点选物品不可用
+  end
+  else begin  // 家属组
+    //UniTabSheet1.TabVisible:=false;  // 日常订餐
+    //UniTabSheet2.TabVisible:=false;  // 查询退餐
+    //UniTabSheet3.TabVisible:=false;  // 修改密码
+    UniTabSheet4.TabVisible:=false;  // 订餐统计不可用
+    UniTabSheet5.TabVisible:=false;  // 点选物品不可用
   end;
   //
 end;
 
 procedure TMainForm.UniTabSheet1BeforeActivate(Sender: TObject;  // 订餐/退餐页面初始化
   var AllowActivate: Boolean);
+var
+  account:single;
 begin
   // 初始化
   UniDateTimePicker1.DateTime:=now();
   UniTreeView1.Items.Clear;
+  account:=0.00;
+  UniLabel4.Text:='欢迎你，'+UniMainModule.global_username;
+  //
+  with UniMainModule.exec_query do
+  begin
+    Close;
+    SQL.Clear;
+    SQL.Add('select account from user_table');
+    SQl.Add('where gong_hao=:gong_hao');
+    ParamByName('gong_hao').Value:=UniMainModule.global_gonghao;
+    Open;
+    if RecordCount>0 then
+    begin
+      account:=FieldByName('account').AsFloat;
+    end;
+  end;
+  UniLabel4.Text:=UniLabel4.Text + '；你的余额为 ' + formatfloat('0.00',account) + ' 元。';
   // 添加菜单信息
+  if (UniMainModule.global_authority='在编人员') or (UniMainModule.global_authority='非编人员') then
+  begin
+    //
+  end
+  else if (UniMainModule.global_authority='家属') then
+  begin
+    if (account<=0) then  // 判断余额，余额不足或欠费则提示充值后再点餐
+    begin
+      UniLabel4.Text:=UniLabel4.Text + '你的余额较低，请提前充值后再订餐。';
+      UniLabel4.Font.Color:=clRed;
+    end;
+  end;
 end;
 
 procedure TMainForm.UniTabSheet2BeforeActivate(Sender: TObject;  // 查询退餐页面初始化
@@ -310,6 +355,7 @@ procedure TMainForm.UniButton8Click(Sender: TObject);
 begin
   ShowMessage('用户名：'+UniMainModule.global_username+';工号：'+UniMainModule.global_gonghao+';部门：'+UniMainModule.global_department+';');
 end;
+
 
 //
 // 密码管理模块结束 ------------------------------------------------------------

@@ -56,6 +56,15 @@ object MainForm: TMainForm
           OnClick = UniTreeView1Click
           OnDblClick = UniTreeView1DblClick
         end
+        object UniLabel4: TUniLabel
+          Left = 18
+          Top = 510
+          Width = 46
+          Height = 13
+          Hint = ''
+          Caption = 'UniLabel4'
+          TabOrder = 3
+        end
       end
     end
     object UniTabSheet2: TUniTabSheet
@@ -218,46 +227,55 @@ object MainForm: TMainForm
     end
     object UniTabSheet5: TUniTabSheet
       Hint = ''
-      Caption = #26412#21608#24847#35265#21453#39304
+      Caption = #28857#36873#29289#21697
       OnBeforeActivate = UniTabSheet5BeforeActivate
-      object UniDBGrid1: TUniDBGrid
-        Left = 20
-        Top = 40
-        Width = 253
-        Height = 303
-        Hint = ''
-        DataSource = UniMainModule.fankui_ds
-        Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgRowSelect, dgCheckSelect, dgConfirmDelete, dgMultiSelect, dgAutoRefreshRow]
-        ReadOnly = True
-        LoadMask.Message = 'Loading data...'
-        TabOrder = 0
-        Columns = <
-          item
-            FieldName = 'food_name'
-            Title.Alignment = taCenter
-            Title.Caption = #28385#24847#33756#21697
-            Width = 244
-            Alignment = taCenter
-          end>
-      end
-      object UniButton5: TUniButton
-        Left = 20
-        Top = 350
-        Width = 253
-        Height = 25
-        Hint = ''
-        Caption = 'UniButton5'
-        TabOrder = 1
-      end
-      object UniDateTimePicker4: TUniDateTimePicker
-        Left = 20
+      object UniGroupBox3: TUniGroupBox
+        Left = 10
         Top = 10
-        Width = 253
+        Width = 330
+        Height = 431
         Hint = ''
-        DateTime = 43658.000000000000000000
-        DateFormat = 'yyyy-MM-dd'
-        TimeFormat = 'HH:mm:ss'
-        TabOrder = 2
+        Caption = #29289#21697#28165#21333
+        TabOrder = 0
+        object UniListBox2: TUniListBox
+          Left = 30
+          Top = 38
+          Width = 269
+          Height = 363
+          Hint = ''
+          Items.Strings = (
+            '1'
+            '2'
+            '3'
+            '4'
+            '5'
+            '6'
+            '7'
+            '8'
+            '9'
+            '10'
+            '11'
+            '12'
+            '13'
+            '14'
+            '15'
+            '16'
+            '17'
+            '18'
+            '19'
+            '20'
+            '21'
+            '22'
+            '23'
+            '24'
+            '25'
+            '26'
+            '27'
+            '28'
+            '29'
+            '30')
+          TabOrder = 1
+        end
       end
     end
   end
