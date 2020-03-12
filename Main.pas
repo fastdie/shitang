@@ -40,6 +40,7 @@ type
     UniLabel4: TUniLabel;
     UniGroupBox3: TUniGroupBox;
     UniListBox2: TUniListBox;
+    UniLabel5: TUniLabel;
     procedure UniFormCreate(Sender: TObject);
     procedure UniButton1Click(Sender: TObject);
     procedure UniTabSheet1BeforeActivate(Sender: TObject;
@@ -171,7 +172,7 @@ begin
     //UniTabSheet2.TabVisible:=false;  // 查询退餐
     //UniTabSheet3.TabVisible:=false;  // 修改密码
     UniTabSheet4.TabVisible:=false;  // 订餐统计不可用
-    UniTabSheet5.TabVisible:=false;  // 点选物品不可用
+    //UniTabSheet5.TabVisible:=false;  // 点选物品
   end
   else begin  // 家属组
     //UniTabSheet1.TabVisible:=false;  // 日常订餐
@@ -247,10 +248,48 @@ begin
   UniMemo1.Clear;
 end;
 
-procedure TMainForm.UniTabSheet5BeforeActivate(Sender: TObject;
+procedure TMainForm.UniTabSheet5BeforeActivate(Sender: TObject;  // 点选食堂兑换物品
   var AllowActivate: Boolean);
+var
+  i:integer;
+  account:single;
 begin
-  UniDateTimePicker3.DateTime:=now();
+  account:=0.00;
+  UniListBox2.Items.Clear;
+  UniLabel5.Text:='欢迎你，'+UniMainModule.global_username;
+  //
+  with UniMainModule.exec_query do  // 查询个人账户余额
+  begin
+    Close;
+    SQL.Clear;
+    SQL.Add('select account from user_table');
+    SQl.Add('where gong_hao=:gong_hao');
+    ParamByName('gong_hao').Value:=UniMainModule.global_gonghao;
+    Open;
+    if RecordCount>0 then
+    begin
+      account:=FieldByName('account').AsFloat;
+    end;
+  end;
+  UniLabel5.Text:=UniLabel5.Text + '；你的余额为 ' + formatfloat('0.00',account) + ' 元。';
+  //
+  with MainModule.UniMainModule.wupin_query do  // 列出物品清单
+  begin
+    Close;
+    SQL.Clear;
+    SQL.Add('select * from goods_table');
+    SQl.Add('order by sn_number');
+    Open;
+    First;
+    if recordcount>0 then
+    begin
+      for i := 0 to recordcount-1 do
+      begin
+        UniListBox2.Items.Add(FieldByName('goods_name').AsString + ' : ' + FieldByName('price').AsString + '元');
+        next;
+      end;
+    end;
+  end;
 end;
 
 procedure TMainForm.UniTimer1Timer(Sender: TObject);
@@ -803,6 +842,12 @@ end;
 
 //
 // 查询模块结束 ----------------------------------------------------------------
+
+// 点选物品模块 ----------------------------------------------------------------
+//
+
+//
+// 点选物品模块结束 ------------------------------------------------------------
 
 initialization
   RegisterAppFormClass(TMainForm);

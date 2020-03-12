@@ -16,7 +16,7 @@ object MainForm: TMainForm
     Width = 852
     Height = 761
     Hint = ''
-    ActivePage = UniTabSheet3
+    ActivePage = UniTabSheet5
     Align = alClient
     TabOrder = 0
     object UniTabSheet1: TUniTabSheet
@@ -233,7 +233,7 @@ object MainForm: TMainForm
         Left = 10
         Top = 10
         Width = 330
-        Height = 431
+        Height = 631
         Hint = ''
         Caption = #29289#21697#28165#21333
         TabOrder = 0
@@ -241,40 +241,18 @@ object MainForm: TMainForm
           Left = 30
           Top = 38
           Width = 269
-          Height = 363
+          Height = 460
           Hint = ''
-          Items.Strings = (
-            '1'
-            '2'
-            '3'
-            '4'
-            '5'
-            '6'
-            '7'
-            '8'
-            '9'
-            '10'
-            '11'
-            '12'
-            '13'
-            '14'
-            '15'
-            '16'
-            '17'
-            '18'
-            '19'
-            '20'
-            '21'
-            '22'
-            '23'
-            '24'
-            '25'
-            '26'
-            '27'
-            '28'
-            '29'
-            '30')
           TabOrder = 1
+        end
+        object UniLabel5: TUniLabel
+          Left = 30
+          Top = 529
+          Width = 46
+          Height = 13
+          Hint = ''
+          Caption = 'UniLabel5'
+          TabOrder = 2
         end
       end
     end
