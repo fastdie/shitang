@@ -164,24 +164,32 @@ begin
   begin
     UniTabSheet1.TabVisible:=false;   // 日常订餐功能不可用
     UniTabSheet2.TabVisible:=false;   // 查询退餐功能不可用
-    //UniTabSheet3.TabVisible:=false; // 修改密码功能
-    //UniTabSheet4.TabVisible:=false; // 订餐统计功能
-    UniTabSheet5.TabVisible:=false;   // 点选物品功能不可用
+    //UniTabSheet3.TabVisible:=false; // 修改密码功能 可用
+    //UniTabSheet4.TabVisible:=false; // 订餐统计功能 可用
+    UniTabSheet5.TabVisible:=false;   // 查询工资不可用
   end
-  else if (UniMainModule.global_authority='在编人员') or (UniMainModule.global_authority='非编人员') then
+  else if (UniMainModule.global_authority='在编人员') then
   begin
-    //UniTabSheet1.TabVisible:=false;  // 日常订餐
-    //UniTabSheet2.TabVisible:=false;  // 查询退餐
-    //UniTabSheet3.TabVisible:=false;  // 修改密码
+    //UniTabSheet1.TabVisible:=false;  // 日常订餐 可用
+    //UniTabSheet2.TabVisible:=false;  // 查询退餐 可用
+    //UniTabSheet3.TabVisible:=false;  // 修改密码 可用
     UniTabSheet4.TabVisible:=false;  // 订餐统计不可用
-    //UniTabSheet5.TabVisible:=false;  // 点选物品
+    //UniTabSheet5.TabVisible:=false;  // 查询工资 可用
+  end
+  else if (UniMainModule.global_authority='非编人员') then
+  begin
+    //UniTabSheet1.TabVisible:=false;  // 日常订餐 可用
+    //UniTabSheet2.TabVisible:=false;  // 查询退餐 可用
+    //UniTabSheet3.TabVisible:=false;  // 修改密码 可用
+    UniTabSheet4.TabVisible:=false;  // 订餐统计不可用
+    UniTabSheet5.TabVisible:=false;  // 查询工资不可用
   end
   else begin  // 家属组
-    //UniTabSheet1.TabVisible:=false;  // 日常订餐
-    //UniTabSheet2.TabVisible:=false;  // 查询退餐
-    //UniTabSheet3.TabVisible:=false;  // 修改密码
+    //UniTabSheet1.TabVisible:=false;  // 日常订餐 可用
+    //UniTabSheet2.TabVisible:=false;  // 查询退餐 可用
+    //UniTabSheet3.TabVisible:=false;  // 修改密码 可用
     UniTabSheet4.TabVisible:=false;  // 订餐统计不可用
-    UniTabSheet5.TabVisible:=false;  // 点选物品不可用
+    UniTabSheet5.TabVisible:=false;  // 查询工资不可用
   end;
   //
 end;
@@ -264,7 +272,7 @@ begin
     SQL.Add('select salary_number from salary_table');
     SQL.Add('where gong_hao=:gong_hao');
     SQL.Add('order by salary_number');
-    ParamByName('gong_hao').Value:='7271750';
+    ParamByName('gong_hao').Value:=MainModule.UniMainModule.global_gonghao;
     Open;
     First;
     for i := 0 to RecordCount-1 do
@@ -845,7 +853,7 @@ begin
       SQL.Add('where salary_number=:salary_number');
       SQL.Add('and gong_hao=:gong_hao');
       ParamByName('salary_number').Value:=UniComboBox1.Text;
-      ParamByName('gong_hao').Value:='7271750';
+      ParamByName('gong_hao').Value:=MainModule.UniMainModule.global_gonghao;
       Open;
       if RecordCount>0 then
       begin
@@ -979,6 +987,7 @@ begin
         UniListBox2.Items.Add('实发数：' + FormatFloat('0.00',FieldByName('shi_fa').AsCurrency)); // 应扣合计数
       end;
     end;
+    // 改变unilistbox显示内容颜色
   end;
 end;
 
