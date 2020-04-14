@@ -15,8 +15,8 @@ type
     tuican_query: TUniQuery;
     fankui_ds: TUniDataSource;
     fankui_query: TUniQuery;
-    wupin_query: TUniQuery;
-    wupin_ds: TUniDataSource;
+    salary_query: TUniQuery;
+    salary_ds: TUniDataSource;
   private
     { Private declarations }
   public

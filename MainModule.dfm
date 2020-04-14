@@ -52,13 +52,16 @@ object UniMainModule: TUniMainModule
     Left = 424
     Top = 56
   end
-  object wupin_query: TUniQuery
+  object salary_query: TUniQuery
     Connection = UniConnection1
+    SQL.Strings = (
+      'select * from salary_table')
+    Active = True
     Left = 424
     Top = 120
   end
-  object wupin_ds: TUniDataSource
-    DataSet = wupin_query
+  object salary_ds: TUniDataSource
+    DataSet = salary_query
     Left = 336
     Top = 120
   end

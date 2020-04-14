@@ -227,7 +227,7 @@ object MainForm: TMainForm
     end
     object UniTabSheet5: TUniTabSheet
       Hint = ''
-      Caption = #28857#36873#29289#21697
+      Caption = #24037#36164#26597#35810
       OnBeforeActivate = UniTabSheet5BeforeActivate
       object UniGroupBox3: TUniGroupBox
         Left = 10
@@ -235,24 +235,34 @@ object MainForm: TMainForm
         Width = 330
         Height = 631
         Hint = ''
-        Caption = #29289#21697#28165#21333
+        Caption = #24037#36164#20449#24687
         TabOrder = 0
         object UniListBox2: TUniListBox
           Left = 30
-          Top = 38
+          Top = 85
           Width = 269
-          Height = 460
+          Height = 508
           Hint = ''
           TabOrder = 1
         end
+        object UniComboBox1: TUniComboBox
+          Left = 30
+          Top = 52
+          Width = 269
+          Hint = ''
+          Text = ''
+          TabOrder = 2
+          IconItems = <>
+          OnChange = UniComboBox1Change
+        end
         object UniLabel5: TUniLabel
           Left = 30
-          Top = 529
-          Width = 46
+          Top = 28
+          Width = 96
           Height = 13
           Hint = ''
-          Caption = 'UniLabel5'
-          TabOrder = 2
+          Caption = #35831#36873#25321#26597#35810#26376#20221#65306
+          TabOrder = 3
         end
       end
     end

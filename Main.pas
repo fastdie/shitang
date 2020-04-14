@@ -40,6 +40,7 @@ type
     UniLabel4: TUniLabel;
     UniGroupBox3: TUniGroupBox;
     UniListBox2: TUniListBox;
+    UniComboBox1: TUniComboBox;
     UniLabel5: TUniLabel;
     procedure UniFormCreate(Sender: TObject);
     procedure UniButton1Click(Sender: TObject);
@@ -57,12 +58,13 @@ type
     procedure UniTabSheet4BeforeActivate(Sender: TObject;
       var AllowActivate: Boolean);
     procedure UniDateTimePicker2Change(Sender: TObject);
-    procedure UniTabSheet5BeforeActivate(Sender: TObject;
-      var AllowActivate: Boolean);
     procedure UniButton6Click(Sender: TObject);
     procedure UniTreeView1DblClick(Sender: TObject);
     procedure UniButton2Click(Sender: TObject);
     procedure UniTreeView1Click(Sender: TObject);
+    procedure UniTabSheet5BeforeActivate(Sender: TObject;
+      var AllowActivate: Boolean);
+    procedure UniComboBox1Change(Sender: TObject);
   private
     { Private declarations }
     SelectedNode1 : TUniTreeNode;
@@ -248,46 +250,27 @@ begin
   UniMemo1.Clear;
 end;
 
-procedure TMainForm.UniTabSheet5BeforeActivate(Sender: TObject;  // 点选食堂兑换物品
+procedure TMainForm.UniTabSheet5BeforeActivate(Sender: TObject;  // 工资查询页面初始化
   var AllowActivate: Boolean);
 var
   i:integer;
-  account:single;
 begin
-  account:=0.00;
-  UniListBox2.Items.Clear;
-  UniLabel5.Text:='欢迎你，'+UniMainModule.global_username;
   //
-  with UniMainModule.exec_query do  // 查询个人账户余额
+  with MainModule.UniMainModule.salary_query do
   begin
+    //
     Close;
     SQL.Clear;
-    SQL.Add('select account from user_table');
-    SQl.Add('where gong_hao=:gong_hao');
-    ParamByName('gong_hao').Value:=UniMainModule.global_gonghao;
-    Open;
-    if RecordCount>0 then
-    begin
-      account:=FieldByName('account').AsFloat;
-    end;
-  end;
-  UniLabel5.Text:=UniLabel5.Text + '；你的余额为 ' + formatfloat('0.00',account) + ' 元。';
-  //
-  with MainModule.UniMainModule.wupin_query do  // 列出物品清单
-  begin
-    Close;
-    SQL.Clear;
-    SQL.Add('select * from goods_table');
-    SQl.Add('order by sn_number');
+    SQL.Add('select salary_number from salary_table');
+    SQL.Add('where gong_hao=:gong_hao');
+    SQL.Add('order by salary_number');
+    ParamByName('gong_hao').Value:='7271750';
     Open;
     First;
-    if recordcount>0 then
+    for i := 0 to RecordCount-1 do
     begin
-      for i := 0 to recordcount-1 do
-      begin
-        UniListBox2.Items.Add(FieldByName('goods_name').AsString + ' : ' + FieldByName('price').AsString + '元');
-        next;
-      end;
+      UniComboBox1.Items.Add(FieldByName('salary_number').AsString);
+      Next;
     end;
   end;
 end;
@@ -296,6 +279,8 @@ procedure TMainForm.UniTimer1Timer(Sender: TObject);
 begin
   UniTreeView1.FullExpand;
 end;
+
+
 //
 // 初始化结束 ------------------------------------------------------------------
 
@@ -394,6 +379,8 @@ procedure TMainForm.UniButton8Click(Sender: TObject);
 begin
   ShowMessage('用户名：'+UniMainModule.global_username+';工号：'+UniMainModule.global_gonghao+';部门：'+UniMainModule.global_department+';');
 end;
+
+
 
 
 //
@@ -845,6 +832,155 @@ end;
 
 // 点选物品模块 ----------------------------------------------------------------
 //
+
+procedure TMainForm.UniComboBox1Change(Sender: TObject);  // 查询工资
+begin
+  if Length(UniComboBox1.Text)=7 then
+  begin
+    with MainModule.UniMainModule.salary_query do
+    begin
+      Close;
+      SQL.Clear;
+      SQL.Add('select * from salary_table');
+      SQL.Add('where salary_number=:salary_number');
+      SQL.Add('and gong_hao=:gong_hao');
+      ParamByName('salary_number').Value:=UniComboBox1.Text;
+      ParamByName('gong_hao').Value:='7271750';
+      Open;
+      if RecordCount>0 then
+      begin
+        UniListBox2.Items.Add('应发项目：'); // 开始输出应发数据
+        //
+        if FieldByName('zhi_wu_gong_zi').Value<>0 then
+        begin
+          UniListBox2.Items.Add('职务工资：' + FormatFloat('0.00',FieldByName('zhi_wu_gong_zi').AsCurrency));
+        end;
+        //
+        if FieldByName('ji_bie_gong_zi').Value<>0 then
+        begin
+          UniListBox2.Items.Add('级别工资：' + FormatFloat('0.00',FieldByName('ji_bie_gong_zi').AsCurrency));
+        end;
+        //
+        if FieldByName('shi_yong_qi').Value<>0 then
+        begin
+          UniListBox2.Items.Add('试用期工资：' + FormatFloat('0.00',FieldByName('shi_yong_qi').AsCurrency));
+        end;
+        //
+        if FieldByName('gong_ren_gang_wei').Value<>0 then
+        begin
+          UniListBox2.Items.Add('工人岗位工资：' + FormatFloat('0.00',FieldByName('gong_ren_gang_wei').AsCurrency));
+        end;
+        //
+        if FieldByName('ji_shu_deng_ji').Value<>0 then
+        begin
+          UniListBox2.Items.Add('技术等级工资：' + FormatFloat('0.00',FieldByName('ji_shu_deng_ji').AsCurrency));
+        end;
+        //
+        if FieldByName('gui_fan_jing_tie').Value<>0 then
+        begin
+          UniListBox2.Items.Add('规范津贴：' + FormatFloat('0.00',FieldByName('gui_fan_jing_tie').AsCurrency));
+        end;
+        //
+        if FieldByName('guan_xian_jing_tie').Value<>0 then
+        begin
+          UniListBox2.Items.Add('关衔津贴：' + FormatFloat('0.00',FieldByName('guan_xian_jing_tie').AsCurrency));
+        end;
+        //
+        if FieldByName('gang_wei_jing_tie').Value<>0 then
+        begin
+          UniListBox2.Items.Add('岗位津贴：' + FormatFloat('0.00',FieldByName('gang_wei_jing_tie').AsCurrency));
+        end;
+        //
+        if FieldByName('tong_xun_bu_zhu').Value<>0 then
+        begin
+          UniListBox2.Items.Add('通讯补助：' + FormatFloat('0.00',FieldByName('tong_xun_bu_zhu').AsCurrency));
+        end;
+        //
+        if FieldByName('jian_ku_jing_tie').Value<>0 then
+        begin
+          UniListBox2.Items.Add('艰苦边远地区津贴：' + FormatFloat('0.00',FieldByName('jian_ku_jing_tie').AsCurrency));
+        end;
+        //
+        if FieldByName('jiao_tong_bao_gan').Value<>0 then
+        begin
+          UniListBox2.Items.Add('交通包干：' + FormatFloat('0.00',FieldByName('jiao_tong_bao_gan').AsCurrency));
+        end;
+        //
+        if FieldByName('wu_jia_bu_tie').Value<>0 then
+        begin
+          UniListBox2.Items.Add('物价补贴：' + FormatFloat('0.00',FieldByName('wu_jia_bu_tie').AsCurrency));
+        end;
+        //
+        if FieldByName('bao_jian_jing_tie').Value<>0 then
+        begin
+          UniListBox2.Items.Add('保健津贴：' + FormatFloat('0.00',FieldByName('bao_jian_jing_tie').AsCurrency));
+        end;
+        //
+        if FieldByName('gong_wu_bu_tie').Value<>0 then
+        begin
+          UniListBox2.Items.Add('公务交通补贴：' + FormatFloat('0.00',FieldByName('gong_wu_bu_tie').AsCurrency));
+        end;
+        //
+        if FieldByName('zhu_fang_bu_tie').Value<>0 then
+        begin
+          UniListBox2.Items.Add('住房物业服务补贴：' + FormatFloat('0.00',FieldByName('zhu_fang_bu_tie').AsCurrency));
+        end;
+        //
+        UniListBox2.Items.Add('应发合计：' + FormatFloat('0.00',FieldByName('ying_fa').AsCurrency)); // 应发合计数
+        //
+        UniListBox2.Items.Add('应扣项目：'); // 开始输出应扣数据
+        //
+        if FieldByName('yang_lao_bao_xian').Value<>0 then
+        begin
+          UniListBox2.Items.Add('养老保险：-' + FormatFloat('0.00',FieldByName('yang_lao_bao_xian').AsCurrency));
+        end;
+        //
+        if FieldByName('zhi_ye_nian_jin').Value<>0 then
+        begin
+          UniListBox2.Items.Add('职业年金：-' + FormatFloat('0.00',FieldByName('zhi_ye_nian_jin').AsCurrency));
+        end;
+        //
+        if FieldByName('qing_jia_kou_kuan').Value<>0 then
+        begin
+          UniListBox2.Items.Add('请假扣款：-' + FormatFloat('0.00',FieldByName('qing_jia_kou_kuan').AsCurrency));
+        end;
+        //
+        if FieldByName('gong_ji_jin').Value<>0 then
+        begin
+          UniListBox2.Items.Add('公积金：-' + FormatFloat('0.00',FieldByName('gong_ji_jin').AsCurrency));
+        end;
+        //
+        if FieldByName('gong_hui_fei').Value<>0 then
+        begin
+          UniListBox2.Items.Add('工会费：-' + FormatFloat('0.00',FieldByName('gong_hui_fei').AsCurrency));
+        end;
+        //
+        if FieldByName('yi_bao').Value<>0 then
+        begin
+          UniListBox2.Items.Add('医疗个人：-' + FormatFloat('0.00',FieldByName('yi_bao').AsCurrency));
+        end;
+        //
+        if FieldByName('ge_shui').Value<>0 then
+        begin
+          UniListBox2.Items.Add('个人所得税：-' + FormatFloat('0.00',FieldByName('ge_shui').AsCurrency));
+        end;
+        //
+        if FieldByName('fang_zu').Value<>0 then
+        begin
+          UniListBox2.Items.Add('房租：-' + FormatFloat('0.00',FieldByName('fang_zu').AsCurrency));
+        end;
+        //
+        if FieldByName('shui_fei').Value<>0 then
+        begin
+          UniListBox2.Items.Add('水费：-' + FormatFloat('0.00',FieldByName('shui_fei').AsCurrency));
+        end;
+        //
+        UniListBox2.Items.Add('应扣合计：-' + FormatFloat('0.00',FieldByName('ying_kou').AsCurrency)); // 应扣合计数
+        UniListBox2.Items.Add('实发数：' + FormatFloat('0.00',FieldByName('shi_fa').AsCurrency)); // 应扣合计数
+      end;
+    end;
+  end;
+end;
 
 //
 // 点选物品模块结束 ------------------------------------------------------------
