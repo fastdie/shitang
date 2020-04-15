@@ -166,7 +166,7 @@ begin
     UniTabSheet2.TabVisible:=false;   // 查询退餐功能不可用
     //UniTabSheet3.TabVisible:=false; // 修改密码功能 可用
     //UniTabSheet4.TabVisible:=false; // 订餐统计功能 可用
-    UniTabSheet5.TabVisible:=false;   // 查询工资不可用
+    //UniTabSheet5.TabVisible:=false;   // 查询工资 可用
   end
   else if (UniMainModule.global_authority='在编人员') then
   begin
@@ -174,7 +174,7 @@ begin
     //UniTabSheet2.TabVisible:=false;  // 查询退餐 可用
     //UniTabSheet3.TabVisible:=false;  // 修改密码 可用
     UniTabSheet4.TabVisible:=false;  // 订餐统计不可用
-    //UniTabSheet5.TabVisible:=false;  // 查询工资 可用
+    UniTabSheet5.TabVisible:=false;  // 查询工资不可用
   end
   else if (UniMainModule.global_authority='非编人员') then
   begin

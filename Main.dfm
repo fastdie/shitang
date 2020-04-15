@@ -16,7 +16,7 @@ object MainForm: TMainForm
     Width = 852
     Height = 761
     Hint = ''
-    ActivePage = UniTabSheet5
+    ActivePage = UniTabSheet3
     Align = alClient
     TabOrder = 0
     object UniTabSheet1: TUniTabSheet
