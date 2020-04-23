@@ -174,7 +174,7 @@ begin
     //UniTabSheet2.TabVisible:=false;  // 查询退餐 可用
     //UniTabSheet3.TabVisible:=false;  // 修改密码 可用
     UniTabSheet4.TabVisible:=false;  // 订餐统计不可用
-    UniTabSheet5.TabVisible:=false;  // 查询工资不可用
+    //UniTabSheet5.TabVisible:=false;  // 查询工资可用
   end
   else if (UniMainModule.global_authority='非编人员') then
   begin
@@ -182,7 +182,7 @@ begin
     //UniTabSheet2.TabVisible:=false;  // 查询退餐 可用
     //UniTabSheet3.TabVisible:=false;  // 修改密码 可用
     UniTabSheet4.TabVisible:=false;  // 订餐统计不可用
-    UniTabSheet5.TabVisible:=false;  // 查询工资不可用
+    //UniTabSheet5.TabVisible:=false;  // 查询工资可用
   end
   else begin  // 家属组
     //UniTabSheet1.TabVisible:=false;  // 日常订餐 可用
@@ -934,6 +934,96 @@ begin
           UniListBox2.Items.Add('住房物业服务补贴：' + FormatFloat('0.00',FieldByName('zhu_fang_bu_tie').AsCurrency));
         end;
         //
+        if FieldByName('gang_wei_gong_zi').Value<>0 then
+        begin
+          UniListBox2.Items.Add('岗位工资：' + FormatFloat('0.00',FieldByName('gang_wei_gong_zi').AsCurrency));
+        end;
+        //
+        if FieldByName('xin_ji_gong_zi').Value<>0 then
+        begin
+          UniListBox2.Items.Add('薪级工资：' + FormatFloat('0.00',FieldByName('xin_ji_gong_zi').AsCurrency));
+        end;
+        //
+        if FieldByName('bao_liu_jin_tie').Value<>0 then
+        begin
+          UniListBox2.Items.Add('保留津贴：' + FormatFloat('0.00',FieldByName('bao_liu_jin_tie').AsCurrency));
+        end;
+        //
+        if FieldByName('te_shu_gang_wei').Value<>0 then
+        begin
+          UniListBox2.Items.Add('特殊岗位津贴：' + FormatFloat('0.00',FieldByName('te_shu_gang_wei').AsCurrency));
+        end;
+        //
+        if FieldByName('xi_yi_fei').Value<>0 then
+        begin
+          UniListBox2.Items.Add('洗衣费：' + FormatFloat('0.00',FieldByName('xi_yi_fei').AsCurrency));
+        end;
+        //
+        if FieldByName('kai_fang_cheng_shi').Value<>0 then
+        begin
+          UniListBox2.Items.Add('开放城市补贴：' + FormatFloat('0.00',FieldByName('kai_fang_cheng_shi').AsCurrency));
+        end;
+        //
+        if FieldByName('shi_dang_bu_tie').Value<>0 then
+        begin
+          UniListBox2.Items.Add('适当补贴：' + FormatFloat('0.00',FieldByName('shi_dang_bu_tie').AsCurrency));
+        end;
+        //
+        if FieldByName('wu_shi_tang').Value<>0 then
+        begin
+          UniListBox2.Items.Add('无食堂补贴：' + FormatFloat('0.00',FieldByName('wu_shi_tang').AsCurrency));
+        end;
+        //
+        if FieldByName('chu_cai_bao_gan').Value<>0 then
+        begin
+          UniListBox2.Items.Add('出差包干：' + FormatFloat('0.00',FieldByName('chu_cai_bao_gan').AsCurrency));
+        end;
+        //
+        if FieldByName('sheng_huo_bu_tie').Value<>0 then
+        begin
+          UniListBox2.Items.Add('生活补贴：' + FormatFloat('0.00',FieldByName('sheng_huo_bu_tie').AsCurrency));
+        end;
+        //
+        if FieldByName('mei_qi_bu_tie').Value<>0 then
+        begin
+          UniListBox2.Items.Add('煤气补贴：' + FormatFloat('0.00',FieldByName('mei_qi_bu_tie').AsCurrency));
+        end;
+        //
+        if FieldByName('kou_an_bu_tie').Value<>0 then
+        begin
+          UniListBox2.Items.Add('口岸补贴：' + FormatFloat('0.00',FieldByName('kou_an_bu_tie').AsCurrency));
+        end;
+        //
+        if FieldByName('jing_xian').Value<>0 then
+        begin
+          UniListBox2.Items.Add('警衔：' + FormatFloat('0.00',FieldByName('jing_xian').AsCurrency));
+        end;
+        //
+        if FieldByName('jiao_tong_bu_tie').Value<>0 then
+        begin
+          UniListBox2.Items.Add('交通补贴：' + FormatFloat('0.00',FieldByName('jiao_tong_bu_tie').AsCurrency));
+        end;
+        //
+        if FieldByName('jia_ban_bu_tie').Value<>0 then
+        begin
+          UniListBox2.Items.Add('加班补贴：' + FormatFloat('0.00',FieldByName('jia_ban_bu_tie').AsCurrency));
+        end;
+        //
+        if FieldByName('shang_xia_ban').Value<>0 then
+        begin
+          UniListBox2.Items.Add('上下班交通补贴：' + FormatFloat('0.00',FieldByName('shang_xia_ban').AsCurrency));
+        end;
+        //
+        if FieldByName('gong_gai_ti_liu').Value<>0 then
+        begin
+          UniListBox2.Items.Add('93公改提留：' + FormatFloat('0.00',FieldByName('gong_gai_ti_liu').AsCurrency));
+        end;
+        //
+        if FieldByName('wu_ye_bu_tie').Value<>0 then
+        begin
+          UniListBox2.Items.Add('物业补贴：' + FormatFloat('0.00',FieldByName('wu_ye_bu_tie').AsCurrency));
+        end;
+        //
         UniListBox2.Items.Add('应发合计：' + FormatFloat('0.00',FieldByName('ying_fa').AsCurrency)); // 应发合计数
         //
         UniListBox2.Items.Add('应扣项目：'); // 开始输出应扣数据
@@ -981,6 +1071,16 @@ begin
         if FieldByName('shui_fei').Value<>0 then
         begin
           UniListBox2.Items.Add('水费：-' + FormatFloat('0.00',FieldByName('shui_fei').AsCurrency));
+        end;
+        //
+        if FieldByName('dian_fei').Value<>0 then
+        begin
+          UniListBox2.Items.Add('电费：-' + FormatFloat('0.00',FieldByName('dian_fei').AsCurrency));
+        end;
+        //
+        if FieldByName('di_jian_gong_zi').Value<>0 then
+        begin
+          UniListBox2.Items.Add('抵减工资：-' + FormatFloat('0.00',FieldByName('di_jian_gong_zi').AsCurrency));
         end;
         //
         UniListBox2.Items.Add('应扣合计：-' + FormatFloat('0.00',FieldByName('ying_kou').AsCurrency)); // 应扣合计数
