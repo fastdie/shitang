@@ -704,9 +704,26 @@ var
   input_date:string;
   i:integer;
   display_str:string;
+  food_price,total_price:single;
+  food_number:integer;
 begin
   input_date:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker3.DateTime);
   UniMemo1.Lines.Clear;
+  //
+  with UniMainModule.exec_query do  // 查询全日订餐金额合计
+  begin
+    Close;
+    SQL.Clear;
+    SQL.Add('select sum(food_price) as total_price from order_table');
+    SQL.Add('where order_date=:order_date');
+    SQL.Add('and order_cancel=:order_cancel');
+    ParamByName('order_date').Value:=input_date;
+    ParamByName('order_cancel').Value:='/';
+    Open;
+    total_price:=Fields.FieldByName('total_price').AsSingle;
+  end;
+  UniMemo1.Lines.Add(input_date+' 订餐信息如下：');
+  UniMemo1.Lines.Add('全日订餐金额合计：' + formatfloat('0.00',total_price) + '元。');
   //
   with UniMainModule.exec_query do  // 列出早餐人数
   begin
@@ -721,7 +738,7 @@ begin
     ParamByName('order_kind').Value:='早餐';
     ParamByName('order_cancel').Value:='/';
     Open;
-    UniMemo1.Lines.Add(input_date+' 订餐信息如下：');
+    UniMemo1.Lines.Add('--------');
     UniMemo1.Lines.Add('早餐数据：订餐人数为'+inttostr(RecordCount)+'人');
   end;
   //
@@ -729,11 +746,11 @@ begin
   begin
     Close;
     SQL.Clear;
-    SQL.Add('select food_name,count(food_name) as food_number from order_table');
+    SQL.Add('select food_name,food_price,count(food_name) as food_number from order_table');
     SQL.Add('where order_date=:order_date');
     SQL.Add('and order_kind=:order_kind');
     SQL.Add('and order_cancel=:order_cancel');
-    SQL.Add('group by food_name');
+    SQL.Add('group by food_name,food_price');
     ParamByName('order_date').Value:=input_date;
     ParamByName('order_kind').Value:='早餐';
     ParamByName('order_cancel').Value:='/';
@@ -741,10 +758,13 @@ begin
     First;
     if RecordCount>0 then
     begin
-
       for i := 0 to RecordCount-1 do
       begin
-        display_str:=Fields.FieldByName('food_name').AsString+' = '+Fields.FieldByName('food_number').AsString;
+        food_price:=Fields.FieldByName('food_price').AsSingle;
+        food_number:=Fields.FieldByName('food_number').AsInteger;
+        total_price:=food_price * food_number;
+        display_str:=Fields.FieldByName('food_name').AsString + ' = ' + Fields.FieldByName('food_number').AsString + ', ';
+        display_str:=display_str + '合计' + formatfloat('0.00',total_price) + '元。';
         UniMemo1.Lines.Add(display_str);
         Next;
       end;
@@ -764,6 +784,7 @@ begin
     ParamByName('order_kind').Value:='午餐';
     ParamByName('order_cancel').Value:='/';
     Open;
+    UniMemo1.Lines.Add('--------');
     UniMemo1.Lines.Add('午餐数据：订餐人数为'+inttostr(RecordCount)+'人');
   end;
   //
@@ -771,11 +792,11 @@ begin
   begin
     Close;
     SQL.Clear;
-    SQL.Add('select food_name,count(food_name) as food_number from order_table');
+    SQL.Add('select food_name,food_price,count(food_name) as food_number from order_table');
     SQL.Add('where order_date=:order_date');
     SQL.Add('and order_kind=:order_kind');
     SQL.Add('and order_cancel=:order_cancel');
-    SQL.Add('group by food_name');
+    SQL.Add('group by food_name,food_price');
     ParamByName('order_date').Value:=input_date;
     ParamByName('order_kind').Value:='午餐';
     ParamByName('order_cancel').Value:='/';
@@ -785,7 +806,11 @@ begin
     begin
       for i := 0 to RecordCount-1 do
       begin
-        display_str:=Fields.FieldByName('food_name').AsString+' = '+Fields.FieldByName('food_number').AsString;
+        food_price:=Fields.FieldByName('food_price').AsSingle;
+        food_number:=Fields.FieldByName('food_number').AsInteger;
+        total_price:=food_price * food_number;
+        display_str:=Fields.FieldByName('food_name').AsString + ' = ' + Fields.FieldByName('food_number').AsString + ', ';
+        display_str:=display_str + '合计' + formatfloat('0.00',total_price) + '元。';
         UniMemo1.Lines.Add(display_str);
         Next;
       end;
@@ -805,6 +830,7 @@ begin
     ParamByName('order_kind').Value:='晚餐';
     ParamByName('order_cancel').Value:='/';
     Open;
+    UniMemo1.Lines.Add('--------');
     UniMemo1.Lines.Add('晚餐数据：订餐人数为'+inttostr(RecordCount)+'人');
   end;
   //
@@ -812,11 +838,11 @@ begin
   begin
     Close;
     SQL.Clear;
-    SQL.Add('select food_name,count(food_name) as food_number from order_table');
+    SQL.Add('select food_name,food_price,count(food_name) as food_number from order_table');
     SQL.Add('where order_date=:order_date');
     SQL.Add('and order_kind=:order_kind');
     SQL.Add('and order_cancel=:order_cancel');
-    SQL.Add('group by food_name');
+    SQL.Add('group by food_name,food_price');
     ParamByName('order_date').Value:=input_date;
     ParamByName('order_kind').Value:='晚餐';
     ParamByName('order_cancel').Value:='/';
@@ -824,10 +850,13 @@ begin
     First;
     if RecordCount>0 then
     begin
-      UniMemo1.Lines.Add('晚餐数据：');
       for i := 0 to RecordCount-1 do
       begin
-        display_str:=Fields.FieldByName('food_name').AsString+' = '+Fields.FieldByName('food_number').AsString;
+        food_price:=Fields.FieldByName('food_price').AsSingle;
+        food_number:=Fields.FieldByName('food_number').AsInteger;
+        total_price:=food_price * food_number;
+        display_str:=Fields.FieldByName('food_name').AsString + ' = ' + Fields.FieldByName('food_number').AsString + ', ';
+        display_str:=display_str + '合计' + formatfloat('0.00',total_price) + '元。';
         UniMemo1.Lines.Add(display_str);
         Next;
       end;
