@@ -93,14 +93,14 @@ procedure TMainForm.confirmsave(Sender:TComponent;AResult:Integer);
 var
   order_kind,food_name,food_price:string;
   i:integer;
+  order_flag:boolean;
 begin
-  if AResult<>mrYes then
+  if AResult<>mrYes then  // 如果用户选择不定餐，则退出且不执行后续代码
   begin
     exit;
   end;
   //
-  // 此处加入订餐代码
-  //
+  order_flag:=true;
   if SelectedNode1.Text='早餐' then
   begin
     //
@@ -117,34 +117,68 @@ begin
     try
       order_kind:=SelectedNode1.Parent.Text;
       i:=pos(':',SelectedNode1.Text);
-      food_name:=copy(SelectedNode1.Text,1,i-1);
+      food_name:=copy(SelectedNode1.Text,1,i-1);  // 获取菜品名称
       food_price:=copy(SelectedNode1.text,i+1,length(SelectedNode1.Text));
       i:=pos('元',food_price);
-      food_price:=copy(food_price,1,i-1);
+      food_price:=copy(food_price,1,i-1);  // 获取菜品单价
       //
-
+      //
+      // 添加代码，判断菜品名称在该订餐时段的订餐数量是否大于2
+      // 如果菜品订餐数量小于两份，则进行执行订餐
+      // 否则，提示订餐数量限制
+      //
       with UniMainModule.exec_query do
       begin
         Close;
         SQL.Clear;
-        SQL.Add('insert into order_table(order_date,order_time,gong_hao,');
-        SQL.Add('user_name,user_department,order_kind,food_name,food_price,');
-        SQL.Add('order_cancel,remark)');
-        SQL.Add('values(:order_date,:order_time,:gong_hao,');
-        SQL.Add(':user_name,:user_department,:order_kind,:food_name,:food_price,');
-        SQL.Add(':order_cancel,:remark)');
+        SQL.Add('select food_name from order_table');
+        SQL.Add('where order_date=:order_date and order_kind=:order_kind ');
+        SQL.Add('and gong_hao=:gong_hao and food_name=:food_name and order_cancel=:order_cancel');
         ParamByName('order_date').Value:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker1.DateTime);
-        ParamByName('order_time').Value:=FormatDateTime('yyyyMMddhhmmss',now());
-        ParamByName('gong_hao').Value:=UniMainModule.global_gonghao;
-        ParamByName('user_name').Value:=UniMainModule.global_username;
-        ParamByName('user_department').Value:=UniMainModule.global_department;
         ParamByName('order_kind').Value:=order_kind;
+        ParamByName('gong_hao').Value:=UniMainModule.global_gonghao;
         ParamByName('food_name').Value:=food_name;
-        ParamByName('food_price').Value:=strtofloat(food_price);
         ParamByName('order_cancel').Value:='/';
-        ParamByName('remark').Value:='web';
-        Execsql;
-        //ShowMessageN('订餐成功');
+        Open;
+        if food_name<>'米饭' then
+        begin
+          if (RecordCount<2) then  // 同类菜品订餐数量小于二
+          begin
+            order_flag:=true;  // 允许订餐
+          end
+          else begin
+            order_flag:=false;  // 提示订餐限制
+          end;
+        end;
+      end;
+      //
+      if order_flag then  // 允许订餐
+      begin
+        with UniMainModule.exec_query do  // 将订餐菜品信息写入数据库
+        begin
+          Close;
+          SQL.Clear;
+          SQL.Add('insert into order_table(order_date,order_time,gong_hao,');
+          SQL.Add('user_name,user_department,order_kind,food_name,food_price,');
+          SQL.Add('order_cancel,remark)');
+          SQL.Add('values(:order_date,:order_time,:gong_hao,');
+          SQL.Add(':user_name,:user_department,:order_kind,:food_name,:food_price,');
+          SQL.Add(':order_cancel,:remark)');
+          ParamByName('order_date').Value:=FormatDateTime('yyyy-MM-dd',UniDateTimePicker1.DateTime);
+          ParamByName('order_time').Value:=FormatDateTime('yyyyMMddhhmmss',now());
+          ParamByName('gong_hao').Value:=UniMainModule.global_gonghao;
+          ParamByName('user_name').Value:=UniMainModule.global_username;
+          ParamByName('user_department').Value:=UniMainModule.global_department;
+          ParamByName('order_kind').Value:=order_kind;
+          ParamByName('food_name').Value:=food_name;
+          ParamByName('food_price').Value:=strtofloat(food_price);
+          ParamByName('order_cancel').Value:='/';
+          ParamByName('remark').Value:='web';
+          Execsql;
+        end;
+      end
+      else begin  // 提示订餐受限
+        ShowMessageN('该菜品订餐数量受限，请谅解');
       end;
     except
       ShowMessageN('订餐失败，请联系管理员,'+food_name+','+food_price);
@@ -218,7 +252,7 @@ begin
       account:=FieldByName('account').AsFloat;
     end;
   end;
-  UniLabel4.Text:=UniLabel4.Text + '；你的余额为 ' + formatfloat('0.00',account) + ' 元。';
+  //UniLabel4.Text:=UniLabel4.Text + '；你的余额为 ' + formatfloat('0.00',account) + ' 元。';
   // 添加菜单信息
   if (UniMainModule.global_authority='在编人员') or (UniMainModule.global_authority='非编人员') then
   begin
