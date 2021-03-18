@@ -235,6 +235,7 @@ object MainForm: TMainForm
         Width = 330
         Height = 631
         Hint = ''
+        Visible = False
         Caption = #24037#36164#20449#24687
         TabOrder = 0
         object UniListBox2: TUniListBox

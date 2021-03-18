@@ -36,33 +36,4 @@ object UniMainModule: TUniMainModule
     Left = 208
     Top = 120
   end
-  object fankui_ds: TUniDataSource
-    DataSet = fankui_query
-    Left = 336
-    Top = 56
-  end
-  object fankui_query: TUniQuery
-    Connection = UniConnection1
-    SQL.Strings = (
-      'select food_name from menulist_table'
-      ''
-      'group by food_name'
-      ''
-      'order by food_name')
-    Left = 424
-    Top = 56
-  end
-  object salary_query: TUniQuery
-    Connection = UniConnection1
-    SQL.Strings = (
-      'select * from salary_table')
-    Active = True
-    Left = 424
-    Top = 120
-  end
-  object salary_ds: TUniDataSource
-    DataSet = salary_query
-    Left = 336
-    Top = 120
-  end
 end

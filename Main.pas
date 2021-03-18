@@ -252,7 +252,7 @@ begin
       account:=FieldByName('account').AsFloat;
     end;
   end;
-  //UniLabel4.Text:=UniLabel4.Text + '；你的余额为 ' + formatfloat('0.00',account) + ' 元。';
+  UniLabel4.Text:=UniLabel4.Text + '；你的洗理券余额为 ' + formatfloat('0.00',account) + ' 元。';
   // 添加菜单信息
   if (UniMainModule.global_authority='在编人员') or (UniMainModule.global_authority='非编人员') then
   begin
@@ -292,13 +292,13 @@ begin
   UniMemo1.Clear;
 end;
 
-procedure TMainForm.UniTabSheet5BeforeActivate(Sender: TObject;  // 工资查询页面初始化
+procedure TMainForm.UniTabSheet5BeforeActivate(Sender: TObject;  // 工资查询页面初始化-停用
   var AllowActivate: Boolean);
-var
-  i:integer;
+{var
+  i:integer;}
 begin
   //
-  with MainModule.UniMainModule.salary_query do
+  {with MainModule.UniMainModule.salary_query do
   begin
     //
     Close;
@@ -314,7 +314,7 @@ begin
       UniComboBox1.Items.Add(FieldByName('salary_number').AsString);
       Next;
     end;
-  end;
+  end;}
 end;
 
 procedure TMainForm.UniTimer1Timer(Sender: TObject);
@@ -906,7 +906,7 @@ end;
 
 procedure TMainForm.UniComboBox1Change(Sender: TObject);  // 查询工资
 begin
-  if Length(UniComboBox1.Text)=7 then
+  {if Length(UniComboBox1.Text)=7 then
   begin
     with MainModule.UniMainModule.salary_query do
     begin
@@ -1151,7 +1151,7 @@ begin
       end;
     end;
     // 改变unilistbox显示内容颜色
-  end;
+  end;}
 end;
 
 //
