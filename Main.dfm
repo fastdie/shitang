@@ -54,7 +54,6 @@ object MainForm: TMainForm
           Color = clWindow
           OnChange = UniTreeView1Change
           OnClick = UniTreeView1Click
-          OnDblClick = UniTreeView1DblClick
         end
         object UniLabel4: TUniLabel
           Left = 18
@@ -228,7 +227,6 @@ object MainForm: TMainForm
     object UniTabSheet5: TUniTabSheet
       Hint = ''
       Caption = #24037#36164#26597#35810
-      OnBeforeActivate = UniTabSheet5BeforeActivate
       object UniGroupBox3: TUniGroupBox
         Left = 10
         Top = 10
@@ -254,7 +252,6 @@ object MainForm: TMainForm
           Text = ''
           TabOrder = 2
           IconItems = <>
-          OnChange = UniComboBox1Change
         end
         object UniLabel5: TUniLabel
           Left = 30
