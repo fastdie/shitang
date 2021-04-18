@@ -3,7 +3,7 @@ object UniServerModule: TUniServerModule
   AutoCoInitialize = True
   TempFolder = 'temp\'
   Port = 8066
-  Title = #38054#24030#28023#20851#39135#22530#35746#39184#31649#29702#31995#32479
+  Title = #39135#22530#35746#39184#31649#29702#31995#32479
   SuppressErrors = []
   Bindings = <>
   SSL.SSLOptions.RootCertFile = 'root.pem'

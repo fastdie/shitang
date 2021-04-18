@@ -3,13 +3,14 @@ object MainForm: TMainForm
   Top = 0
   ClientHeight = 761
   ClientWidth = 852
-  Caption = #38054#24030#28023#20851#39135#22530#35746#39184#31649#29702#31995#32479
+  Caption = #39135#22530#35746#39184#31649#29702#31995#32479
   WindowState = wsMaximized
   OldCreateOrder = False
   MonitoredKeys.Keys = <>
+  Font.Height = -13
   OnCreate = UniFormCreate
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 120
+  TextHeight = 16
   object UniPageControl1: TUniPageControl
     Left = 0
     Top = 0
@@ -58,8 +59,8 @@ object MainForm: TMainForm
         object UniLabel4: TUniLabel
           Left = 18
           Top = 510
-          Width = 46
-          Height = 13
+          Width = 55
+          Height = 16
           Hint = ''
           Caption = 'UniLabel4'
           TabOrder = 3
@@ -136,8 +137,8 @@ object MainForm: TMainForm
         object UniLabel1: TUniLabel
           Left = 40
           Top = 56
-          Width = 48
-          Height = 13
+          Width = 60
+          Height = 16
           Hint = ''
           Caption = #21407#23494#30721#65306
           TabOrder = 2
@@ -145,8 +146,8 @@ object MainForm: TMainForm
         object UniLabel2: TUniLabel
           Left = 40
           Top = 104
-          Width = 48
-          Height = 13
+          Width = 60
+          Height = 16
           Hint = ''
           Caption = #26032#23494#30721#65306
           TabOrder = 3
@@ -154,8 +155,8 @@ object MainForm: TMainForm
         object UniLabel3: TUniLabel
           Left = 20
           Top = 160
-          Width = 72
-          Height = 13
+          Width = 90
+          Height = 16
           Hint = ''
           Caption = #37325#22797#26032#23494#30721#65306
           TabOrder = 4
@@ -256,8 +257,8 @@ object MainForm: TMainForm
         object UniLabel5: TUniLabel
           Left = 30
           Top = 28
-          Width = 96
-          Height = 13
+          Width = 120
+          Height = 16
           Hint = ''
           Caption = #35831#36873#25321#26597#35810#26376#20221#65306
           TabOrder = 3
