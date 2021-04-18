@@ -56,15 +56,6 @@ object MainForm: TMainForm
           OnChange = UniTreeView1Change
           OnClick = UniTreeView1Click
         end
-        object UniLabel4: TUniLabel
-          Left = 18
-          Top = 510
-          Width = 55
-          Height = 16
-          Hint = ''
-          Caption = 'UniLabel4'
-          TabOrder = 3
-        end
       end
     end
     object UniTabSheet2: TUniTabSheet
@@ -121,7 +112,7 @@ object MainForm: TMainForm
         Left = 20
         Top = 20
         Width = 289
-        Height = 317
+        Height = 397
         Hint = ''
         Caption = #35831#36755#20837#21407#23494#30721#19982#26032#23494#30721
         TabOrder = 0
@@ -249,6 +240,7 @@ object MainForm: TMainForm
           Left = 30
           Top = 52
           Width = 269
+          Height = 24
           Hint = ''
           Text = ''
           TabOrder = 2

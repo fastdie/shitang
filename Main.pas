@@ -37,7 +37,6 @@ type
     UniButton6: TUniButton;
     UniListBox1: TUniListBox;
     UniButton2: TUniButton;
-    UniLabel4: TUniLabel;
     UniGroupBox3: TUniGroupBox;
     UniListBox2: TUniListBox;
     UniComboBox1: TUniComboBox;
@@ -191,78 +190,57 @@ procedure TMainForm.UniFormCreate(Sender: TObject);  // 根据用户权限决定显示页面
 begin
   UniDateTimePicker1.DateTime:=now();
   UniDateTimePicker2.DateTime:=now();
-  if UniMainModule.global_authority='食堂管理员' then
+  //
+  if UniMainModule.global_department='钦州港海关' then  // 当钦州港海关用户登录，只允许修改密码
   begin
-    UniTabSheet1.TabVisible:=false;   // 日常订餐功能不可用
-    UniTabSheet2.TabVisible:=false;   // 查询退餐功能不可用
-    //UniTabSheet3.TabVisible:=false; // 修改密码功能 可用
-    //UniTabSheet4.TabVisible:=false; // 订餐统计功能 可用
-    //UniTabSheet5.TabVisible:=false;   // 查询工资 可用
-  end
-  else if (UniMainModule.global_authority='在编人员') then
-  begin
-    //UniTabSheet1.TabVisible:=false;  // 日常订餐 可用
-    //UniTabSheet2.TabVisible:=false;  // 查询退餐 可用
+    UniTabSheet1.TabVisible:=false;  // 日常订餐 不可用
+    UniTabSheet2.TabVisible:=false;  // 查询退餐 不可用
     //UniTabSheet3.TabVisible:=false;  // 修改密码 可用
     UniTabSheet4.TabVisible:=false;  // 订餐统计不可用
     UniTabSheet5.TabVisible:=false;  // 查询工资不可用
   end
-  else if (UniMainModule.global_authority='非编人员') then
-  begin
-    //UniTabSheet1.TabVisible:=false;  // 日常订餐 可用
-    //UniTabSheet2.TabVisible:=false;  // 查询退餐 可用
-    //UniTabSheet3.TabVisible:=false;  // 修改密码 可用
-    UniTabSheet4.TabVisible:=false;  // 订餐统计不可用
-    UniTabSheet5.TabVisible:=false;  // 查询工资不可用
-  end
-  else begin  // 家属组
-    //UniTabSheet1.TabVisible:=false;  // 日常订餐 可用
-    //UniTabSheet2.TabVisible:=false;  // 查询退餐 可用
-    //UniTabSheet3.TabVisible:=false;  // 修改密码 可用
-    UniTabSheet4.TabVisible:=false;  // 订餐统计不可用
-    UniTabSheet5.TabVisible:=false;  // 查询工资不可用
+  else begin  // 其他部门用户登录，根据用户权限来判断
+    if UniMainModule.global_authority='食堂管理员' then
+    begin
+      UniTabSheet1.TabVisible:=false;   // 日常订餐功能不可用
+      UniTabSheet2.TabVisible:=false;   // 查询退餐功能不可用
+      //UniTabSheet3.TabVisible:=false; // 修改密码功能 可用
+      //UniTabSheet4.TabVisible:=false; // 订餐统计功能 可用
+      //UniTabSheet5.TabVisible:=false;   // 查询工资 可用
+    end
+    else if (UniMainModule.global_authority='在编人员') then
+    begin
+      //UniTabSheet1.TabVisible:=false;  // 日常订餐 可用
+      //UniTabSheet2.TabVisible:=false;  // 查询退餐 可用
+      //UniTabSheet3.TabVisible:=false;  // 修改密码 可用
+      UniTabSheet4.TabVisible:=false;  // 订餐统计不可用
+      UniTabSheet5.TabVisible:=false;  // 查询工资不可用
+    end
+    else if (UniMainModule.global_authority='非编人员') then
+    begin
+      //UniTabSheet1.TabVisible:=false;  // 日常订餐 可用
+      //UniTabSheet2.TabVisible:=false;  // 查询退餐 可用
+      //UniTabSheet3.TabVisible:=false;  // 修改密码 可用
+      UniTabSheet4.TabVisible:=false;  // 订餐统计不可用
+      UniTabSheet5.TabVisible:=false;  // 查询工资不可用
+    end
+    else begin  // 家属组
+      //UniTabSheet1.TabVisible:=false;  // 日常订餐 可用
+      //UniTabSheet2.TabVisible:=false;  // 查询退餐 可用
+      //UniTabSheet3.TabVisible:=false;  // 修改密码 可用
+      UniTabSheet4.TabVisible:=false;  // 订餐统计不可用
+      UniTabSheet5.TabVisible:=false;  // 查询工资不可用
+    end;
   end;
   //
 end;
 
 procedure TMainForm.UniTabSheet1BeforeActivate(Sender: TObject;  // 订餐/退餐页面初始化
   var AllowActivate: Boolean);
-var
-  account:single;
 begin
   // 初始化
   UniDateTimePicker1.DateTime:=now();
   UniTreeView1.Items.Clear;
-  account:=0.00;
-  UniLabel4.Text:='欢迎你，'+UniMainModule.global_username;
-  //
-  with UniMainModule.exec_query do
-  begin
-    Close;
-    SQL.Clear;
-    SQL.Add('select account from user_table');
-    SQl.Add('where gong_hao=:gong_hao');
-    ParamByName('gong_hao').Value:=UniMainModule.global_gonghao;
-    Open;
-    if RecordCount>0 then
-    begin
-      account:=FieldByName('account').AsFloat;
-    end;
-  end;
-  UniLabel4.Text:=UniLabel4.Text + '；你的洗理券余额为 ' + formatfloat('0.00',account) + ' 元。';
-  // 注释掉提醒家属充值内容，因为account字段已用于洗理券
-  {if (UniMainModule.global_authority='在编人员') or (UniMainModule.global_authority='非编人员') then
-  begin
-    //
-  end
-  else if (UniMainModule.global_authority='家属') then
-  begin
-    if (account<=0) then  // 判断余额，余额不足或欠费则提示充值后再点餐
-    begin
-      UniLabel4.Text:=UniLabel4.Text + '你的余额较低，请提前充值后再订餐。';
-      UniLabel4.Font.Color:=clRed;
-    end;
-  end;}
 end;
 
 procedure TMainForm.UniTabSheet2BeforeActivate(Sender: TObject;  // 查询退餐页面初始化
@@ -389,8 +367,28 @@ begin
 end;
 
 procedure TMainForm.UniButton8Click(Sender: TObject);  // 查看当前用户状态
+var
+  show_str:string;
+  account:single;
 begin
-  ShowMessage('用户名：'+UniMainModule.global_username+';工号：'+UniMainModule.global_gonghao+';部门：'+UniMainModule.global_department+';');
+  account:=0.00;
+  with UniMainModule.exec_query do
+  begin
+    Close;
+    SQL.Clear;
+    SQL.Add('select account from user_table');
+    SQl.Add('where gong_hao=:gong_hao');
+    ParamByName('gong_hao').Value:=UniMainModule.global_gonghao;
+    Open;
+    if RecordCount>0 then
+    begin
+      account:=FieldByName('account').AsFloat;
+    end;
+  end;
+  //
+  show_str := '用户名：'+UniMainModule.global_username+'；工号：'+UniMainModule.global_gonghao+'；部门：'+UniMainModule.global_department;
+  show_str := show_str + '；洗理券余额：' + formatfloat('0.00',account) + '元。';
+  ShowMessageN(show_str);
 end;
 
 //
